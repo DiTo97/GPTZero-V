@@ -5,9 +5,9 @@ import json
 # c2pa-python library for reading C2PA data
 # See usage: https://raw.githubusercontent.com/contentauth/c2pa-python/refs/heads/main/docs/usage.md
 from c2pa import Reader as C2PAReader
+from c2pa.c2pa.c2pa import Error as C2PAError
 
 # exif library for reading EXIF data
-# See usage: https://gitlab.com/TNThieding/exif/-/raw/master/README.rst
 from exif import Image as ExifImage
 
 
@@ -27,28 +27,35 @@ def compute_probability(c2pa_generated: bool, exif_present: bool) -> int:
 
 
 # 2. Check C2PA metadata
-def check_c2pa(file_bytes):
+def check_c2pa(file_bytes, mime_type="image/jpeg"):
     """
     Check for C2PA metadata in the image.
-    Returns (is_generated, manifest_dict).
+    Returns tuple: (is_generated, manifest_dict, error_message).
     """
     try:
-        # Use a stream-based reader. Adjust the mime type if needed (e.g., "image/png").
+        # Use a stream-based reader with the provided mime type
         stream = io.BytesIO(file_bytes)
-        reader = C2PAReader("image/jpeg", stream)
+        reader = C2PAReader(mime_type, stream)
         manifest = reader.get_active_manifest()
         if manifest:
             claim_generator = manifest.get("claim_generator", "")
             if "openai" in claim_generator.lower():
-                return True, manifest
-        return False, manifest
-    except Exception:
-        # If there's an error or no C2PA data, just return false
-        return False, None
+                return True, manifest, None
+        return False, manifest, None
+    except C2PAError.ManifestNotFound:
+        # This is normal for non-C2PA images like regular smartphone photos
+        return False, None, "No C2PA metadata found (ManifestNotFound)"
+    except C2PAError.Decoding as e:
+        print(e)
+        # This occurs with some AI-generated images that have malformed C2PA data
+        return True, None, "C2PA data present but could not be decoded"
+    except Exception as e:
+        # For any other unexpected errors
+        return False, None, f"Error checking C2PA: {str(e)}"
 
 
 # 3. Check EXIF metadata
-def check_exif(file_bytes):
+def check_exif(file_bytes, mime_type=None):  # Added mime_type param for consistency
     """
     Check for EXIF metadata in the image.
     Returns (has_exif, exif_object).
@@ -90,10 +97,11 @@ def main():
       font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 8px;
+      color: #000;
     }
     .card-content {
       font-size: 0.95rem;
-      color: #333;
+      color: #000;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -119,13 +127,15 @@ def main():
     with right_col:
         if uploaded_file is not None:
             file_bytes = uploaded_file.read()
-            st.image(file_bytes, caption="Uploaded Image", use_column_width=True)
+            # Get the MIME type of the uploaded file
+            mime_type = uploaded_file.type
+            st.image(file_bytes, caption="Uploaded Image", use_container_width=True)
 
-            # 1) Check C2PA
-            c2pa_generated, manifest = check_c2pa(file_bytes)
+            # 1) Check C2PA with the detected MIME type
+            c2pa_generated, manifest, c2pa_error = check_c2pa(file_bytes, mime_type)
 
-            # 2) Check EXIF
-            exif_present, exif_data = check_exif(file_bytes)
+            # 2) Check EXIF with the detected MIME type
+            exif_present, exif_data = check_exif(file_bytes, mime_type)
 
             # 3) Compute AI probability
             ai_probability = compute_probability(c2pa_generated, exif_present)
@@ -155,12 +165,14 @@ def main():
                 """
                 card("C2PA Metadata Found", c2pa_html)
             else:
-                card("C2PA Metadata", "<p>No C2PA metadata found.</p>")
+                c2pa_message = c2pa_error or "No C2PA metadata found."
+                card("C2PA Metadata", f"<p>{c2pa_message}</p>")
 
             # If EXIF is present, show an EXIF card with a few interesting fields
             if exif_present:
                 # Gather some typical fields
                 exif_fields_of_interest = [
+                    ("EXIF Version", getattr(exif_data, 'exif_version', None)),
                     ("Camera Make", getattr(exif_data, 'make', None)),
                     ("Camera Model", getattr(exif_data, 'model', None)),
                     ("Date/Time Original", getattr(exif_data, 'datetime_original', None)),

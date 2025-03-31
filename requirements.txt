@@ -1,3 +1,0 @@
-c2pa-python>0.5,<1
-exif>1,<2
-streamlit>1,<2
