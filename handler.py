@@ -156,22 +156,16 @@ def main() -> None:
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("Media Validity Verification")
+    st.title("GPTZero-V")
     st.write("""
-    This tool checks if an image contains:
-    
-    - **C2PA Metadata**: If present, and if the `claim_generator` field indicates an OpenAI image generation model,
-      the image is flagged as generated.
-    - **EXIF Metadata**: If no relevant C2PA metadata is found, the tool checks for EXIF data, which usually suggests 
-      the image was captured from a device.
-      
-    Finally, it calculates a simplistic "AI-generated probability" for demonstration.
+    This Streamlit app is designed as an early stage mechanism to verify whether an image appears to be
+    captured from a device or generated using AI image generation tools (e.g., OpenAI GPT-4o).
     """)
 
     # Create tabs for different sections
-    tab1, tab2 = st.tabs(["Image Analysis", "App Information"])
+    tab1, tab2 = st.tabs(["How It Works", "Image Analysis"])
 
-    with tab1:
+    with tab2:
         # Check if the c2patool binary is available
         if binary_path is None:
             st.error("c2patool binary is missing. Please ensure the tool is available in the resources directory.")
@@ -246,18 +240,8 @@ def main() -> None:
             else:
                 st.info("Please upload an image to see the analysis.")
 
-    with tab2:
-        st.header("README")
+    with tab1:
         st.markdown("""
-        ### Media Validity Verification Tool
-
-        **Overview**:
-        
-        This Streamlit app is designed as an early stage mechanism to verify whether an image appears to be
-        captured from a device or generated using AI image generation tools (e.g., OpenAI models).
-        
-        **How It Works**:
-        
         1. **C2PA Metadata Check**:
            - The app uses the [c2pa-python](https://github.com/contentauth/c2pa-python) library to read C2PA metadata.
            - It checks the active manifest's `claim_generator` field.
@@ -271,7 +255,7 @@ def main() -> None:
            - As a demo, we compute a basic probability from 0–100 for AI generation. This is purely illustrative 
              and should not be considered a reliable metric.
         
-        **Limitations**:
+        ### Limitations
         
         - **Not Bulletproof**: EXIF metadata can be manipulated or added to images that were not actually captured by a device.
         - **Incomplete Coverage**: This tool does not cover all watermarking or authenticity measures (for example,
