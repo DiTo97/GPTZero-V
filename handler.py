@@ -1,6 +1,11 @@
 import streamlit as st
 import io
 import json
+import platform
+import subprocess
+import tempfile
+import os
+from pathlib import Path
 
 # c2pa-python library for reading C2PA data
 # See usage: https://raw.githubusercontent.com/contentauth/c2pa-python/refs/heads/main/docs/usage.md
@@ -10,9 +15,23 @@ from c2pa.c2pa.c2pa import Error as C2PAError
 # exif library for reading EXIF data
 from exif import Image as ExifImage
 
+# Detect the platform and set the binary path
+current_platform = platform.system().lower()
+resources_dir = Path(__file__).resolve().parent / "resources"
+if current_platform == "windows":
+    binary_path = resources_dir / "c2patool_windows.exe"
+elif current_platform == "linux":
+    binary_path = resources_dir / "c2patool_linux"
+elif current_platform == "darwin":
+    binary_path = resources_dir / "c2patool_macos"
+else:
+    binary_path = None
 
-# 1. A small utility function to guess an "AI generation probability"
-#    based on whether we found C2PA indicating OpenAI, EXIF data, etc.
+# Check if the binary exists
+if binary_path is not None and not binary_path.exists():
+    binary_path = None
+
+
 def compute_probability(c2pa_generated: bool, exif_present: bool) -> int:
     """
     Returns an integer from 0 to 100 representing our 'best guess' 
@@ -26,8 +45,7 @@ def compute_probability(c2pa_generated: bool, exif_present: bool) -> int:
         return 10   # EXIF present, no AI metadata -> guess it's likely real
 
 
-# 2. Check C2PA metadata
-def check_c2pa(file_bytes, mime_type="image/jpeg"):
+def check_c2pa(file_bytes: bytes, mime_type: str = "image/jpeg") -> tuple[bool, dict | None, str | None]:
     """
     Check for C2PA metadata in the image.
     Returns tuple: (is_generated, manifest_dict, error_message).
@@ -54,8 +72,7 @@ def check_c2pa(file_bytes, mime_type="image/jpeg"):
         return False, None, f"Error checking C2PA: {str(e)}"
 
 
-# 3. Check EXIF metadata
-def check_exif(file_bytes, mime_type=None):  # Added mime_type param for consistency
+def check_exif(file_bytes: bytes, mime_type: str | None = None) -> tuple[bool, ExifImage | None]:
     """
     Check for EXIF metadata in the image.
     Returns (has_exif, exif_object).
@@ -70,9 +87,7 @@ def check_exif(file_bytes, mime_type=None):  # Added mime_type param for consist
         return False, None
 
 
-# 4. A small helper to create a "card" layout in Streamlit, 
-#    styled similarly to shadcn using inline CSS
-def card(title, content):
+def card(title: str, content: str) -> None:
     st.markdown(f"""
     <div class="card">
       <div class="card-title">{title}</div>
@@ -81,7 +96,42 @@ def card(title, content):
     """, unsafe_allow_html=True)
 
 
-def main():
+def c2pa_check_from_binary(file_bytes: bytes) -> tuple[bool, dict | None, str | None]:
+    """
+    Check for C2PA metadata using platform-specific binaries.
+    Returns tuple: (is_generated, manifest_dict, error_message).
+    """
+    if binary_path is None:
+        return False, None, f"Unsupported platform or missing binary: {current_platform}"
+
+    try:
+        # Create a temporary file to save the image
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+            temp_file.write(file_bytes)
+            temp_file_path = temp_file.name
+
+        # Run the c2patool binary with the image file path as a parameter
+        result = subprocess.run([str(binary_path), temp_file_path], capture_output=True, text=True)
+
+        # Remove the temporary file
+        os.remove(temp_file_path)
+
+        # Capture the output and try to parse it as JSON
+        output = result.stdout
+        try:
+            manifest = json.loads(output)
+            claim_generator = manifest.get("claim_generator", "")
+            if "openai" in claim_generator.lower():
+                return True, manifest, None
+            return False, manifest, None
+        except json.JSONDecodeError:
+            return False, None, "Failed to parse JSON output from c2patool"
+
+    except Exception as e:
+        return False, None, f"Error checking C2PA from binary: {str(e)}"
+
+
+def main() -> None:
     # Inject some CSS to mimic "shadcn card" style
     st.markdown("""
     <style>
@@ -122,7 +172,10 @@ def main():
     left_col, right_col = st.columns([1,2], gap="large")
 
     with left_col:
-        uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+        if binary_path is None:
+            st.error("c2patool binary is missing. Please ensure the tool is available in the resources directory.")
+        else:
+            uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
 
     with right_col:
         if uploaded_file is not None:
@@ -132,7 +185,7 @@ def main():
             st.image(file_bytes, caption="Uploaded Image", use_container_width=True)
 
             # 1) Check C2PA with the detected MIME type
-            c2pa_generated, manifest, c2pa_error = check_c2pa(file_bytes, mime_type)
+            c2pa_generated, manifest, c2pa_error = c2pa_check_from_binary(file_bytes)
 
             # 2) Check EXIF with the detected MIME type
             exif_present, exif_data = check_exif(file_bytes, mime_type)

@@ -31,6 +31,7 @@ Then, upload an image to analyze its metadata and AI-generation probability.
 - **Metadata can be manipulated**, reducing reliability and their presence is never a guarantee of the source.
 - **Not all watermarking methods are covered** (e.g., Google's SynthID is unsupported).
 - **AI probability is heuristic**, meant for demonstration purposes only.
+- **More image generation providers should be checked in the C2PA metadata** (currently only OpenAI).
 
 ## call to action
 
