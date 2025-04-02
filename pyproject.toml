@@ -23,7 +23,7 @@ contrib = [
 
 
 [tool.ruff]
-src = ["authenticity", "components"]
+src = ["src"]
 exclude = [
   ".git-rewrite",
   ".git",
