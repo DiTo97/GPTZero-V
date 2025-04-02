@@ -22,7 +22,7 @@ ensure you have uv as package manager. Then run:
 uv run streamlit run app.py
 ```
 
-Alternatively, it is available on Streamlit Cloud, at [gptzero-v.streamlit.app](https://gptzero-v.streamlit.app).
+Alternatively, it is available on Streamlit Cloud at [gptzero-v.streamlit.app](https://gptzero-v.streamlit.app).
 
 ## ⚠️ limitations
 
