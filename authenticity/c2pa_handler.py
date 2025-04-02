@@ -19,13 +19,14 @@ def c2pa_check_from_binary(
     if binary_path is None:
         return False, None, f"Unsupported platform or missing binary"
 
-    extension = mime_map[mime_type]
+    extension = mime_map.get(mime_type)
+    if extension is None:
+        return False, None, f"Unsupported MIME type: {mime_type}"
 
     # Create a temporary file to save the image
     with tempfile.NamedTemporaryFile(suffix=extension) as temp_file:
         temp_file.write(file_bytes)
         temp_file_path = temp_file.name
-
         # Run the c2patool binary with the image file path as a parameter
         result = subprocess.run(
             [str(binary_path), "-d", temp_file_path], capture_output=True, text=True, check=False
