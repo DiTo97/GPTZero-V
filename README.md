@@ -1,6 +1,9 @@
 # GPTZero-V
 
 A simple attempt at a heuristic GPTZero algorithm for image authenticity verification through metadata analysis.
+
+![GIF](static/GPTZero-V.gif)
+
 ## 🔍 overview
 
 With the proliferation of manipulated, edited, and synthetic imagery, determining the authenticity of digital media has become increasingly challenging. This includes AI-generated content, deepfakes, and other forms of manipulated media. This Streamlit app helps assess an image's authenticity by analyzing its metadata, checking for:
@@ -10,10 +13,6 @@ With the proliferation of manipulated, edited, and synthetic imagery, determinin
 - **Authenticity Probability Score**: A heuristic estimate (0-100%) of the likelihood that an image is non-authentic, based on combined metadata findings.
 
 This project explores a metadata-based approach to authenticity verification, complementary to detection methods from visual cues. The goal is to raise awareness about media integrity and encourage more robust authentication mechanisms.
-
-## 🎬 demonstration
-
-![GIF](static/GPTZero-V.gif)
 
 ## 🚀 usage
 
