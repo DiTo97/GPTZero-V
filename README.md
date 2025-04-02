@@ -16,13 +16,13 @@ This project explores a metadata-based approach to authenticity verification, co
 
 ## 🚀 usage
 
-ensure you have uv as package manager. Then:
+ensure you have uv as package manager. Then run:
 
 ```shell
 uv run streamlit run app.py
 ```
 
-Then, upload an image to analyze its metadata and authenticity probability.
+Alternatively, it is available on Streamlit Cloud, at [gptzero-v.streamlit.app](https://gptzero-v.streamlit.app).
 
 ## ⚠️ limitations
 
