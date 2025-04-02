@@ -1,7 +1,7 @@
 [project]
 name = "GPTZero-V"
 version = "0.1.0"
-description = "heuristic GPTZero for determining the authenticity of images from their metadata"
+description = "A simple attempt at a heuristic GPTZero algorithm for image authenticity verification through metadata analysis"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
