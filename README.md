@@ -14,15 +14,27 @@ With the proliferation of manipulated, edited, and synthetic imagery, determinin
 
 This project explores a metadata-based approach to authenticity verification, complementary to detection methods from visual cues. The goal is to raise awareness about media integrity and encourage more robust authentication mechanisms.
 
-## 🚀 usage
+## 🚀 installation
 
-ensure you have uv as package manager. Then run:
+The suggested approach is using Docker:
 
 ```shell
-uv run streamlit run app.py
+docker build -t gptzero-v:0.1 .
 ```
 
-Alternatively, it is available on Streamlit Cloud at [gptzero-v.streamlit.app](https://gptzero-v.streamlit.app).
+```shell
+docker run -p 8501:8501 gptzero-v:0.1
+```
+
+If you'd rather install it locally, ensure you have [uv](https://docs.astral.sh/uv/) as package manager.
+
+Then, run it as follows:
+
+```shell
+uv run streamlit run src/handler.py
+```
+
+Alternatively, it is available on Render at [gptzero-v.onrender.com](https://gptzero-v.onrender.com).
 
 ## ⚠️ limitations
 
