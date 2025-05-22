@@ -3,7 +3,7 @@ name = "GPTZero-V"
 version = "0.1.0"
 description = "A simple attempt at a heuristic GPTZero algorithm for image authenticity verification through metadata analysis"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
 license = {file = "LICENSE"}
 keywords = ["content-authenticity", "heuristic-algorithm", "image-generation", "metadata"]
@@ -11,6 +11,7 @@ dependencies = [
   "exif>1,<2",
   "plotly>6",
   "streamlit>1,<2",
+  "tornado==6.5.0",
 ]
 
 
@@ -18,7 +19,7 @@ dependencies = [
 contrib = [
   "mypy<2",
   "pre-commit<5",
-  "setuptools<71",
+  "setuptools>80",
 ]
 
 
