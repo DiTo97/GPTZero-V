@@ -10,10 +10,12 @@ keywords = ["content-authenticity", "heuristic-algorithm", "image-generation", "
 dependencies = [
   "exif>1,<2",
   "plotly>6",
+  "protobuf>5.29.5",
+  "requests>2.32.4",
   "streamlit>1,<2",
-  "tornado==6.5.0",
+  "tornado>6.5.0",
+  "urllib3==2.6.0"
 ]
-
 
 [dependency-groups]
 contrib = [
@@ -21,7 +23,6 @@ contrib = [
   "pre-commit<5",
   "setuptools>80",
 ]
-
 
 [tool.ruff]
 src = ["src"]
@@ -92,7 +93,6 @@ ignore = [
 [tool.ruff.lint.isort]
 known-first-party = ["authenticity", "components"]
 lines-after-imports = 2
-
 
 [tool.uv]
 default-groups = ["contrib"]
