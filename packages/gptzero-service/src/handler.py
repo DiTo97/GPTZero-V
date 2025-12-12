@@ -97,7 +97,7 @@ def Authenticity():  # noqa: N802
 
             if uploaded_file is not None:
                 file_bytes = uploaded_file.read()
-                st.image(file_bytes, caption="", use_container_width=True)
+                st.image(file_bytes, caption="", width="content")
 
     # Second column for analysis cards
     with col2:
