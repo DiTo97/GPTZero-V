@@ -3,13 +3,14 @@
 import sys
 from pathlib import Path
 
+
 # Add gptzero package to path
 gptzero_path = Path(__file__).parent.parent.parent.parent / "gptzero" / "src"
 sys.path.insert(0, str(gptzero_path))
 
-from gptzero import ImageInput, ImageVerifier
+from gptzero import ImageInput, ImageVerifier  # noqa: E402
 
-from gptzero_api.models import (
+from gptzero_api.models import (  # noqa: E402
     AuthenticityResultResponse,
     C2PAMetadataResponse,
     EXIFMetadataResponse,
@@ -25,7 +26,9 @@ class VerificationService:
         """Initialize the verification service."""
         self.verifier = ImageVerifier()
 
-    def verify_image(self, data: bytes, mime_type: str, filename: str | None = None) -> VerifyImageResponse:
+    def verify_image(
+        self, data: bytes, mime_type: str, filename: str | None = None
+    ) -> VerifyImageResponse:
         """
         Verify image authenticity.
 

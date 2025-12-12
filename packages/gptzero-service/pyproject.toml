@@ -26,7 +26,7 @@ indent-width = 4
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "YTT", "B", "C4", "SIM"]
-ignore = []
+ignore = ["E501"]  # Ignore line length for UI strings
 
 [tool.ruff.lint.isort]
 known-first-party = ["components"]

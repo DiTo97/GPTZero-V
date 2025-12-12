@@ -139,10 +139,7 @@ class C2PAMetadata:
                 return True
 
         # Check if digital source type indicates AI generation
-        if self.digital_source_type and "AI tool" in self.digital_source_type:
-            return True
-
-        return False
+        return bool(self.digital_source_type and "AI tool" in self.digital_source_type)
 
 
 @dataclass

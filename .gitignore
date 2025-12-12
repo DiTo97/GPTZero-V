@@ -8,6 +8,12 @@ __pycache__
 # distribution
 build
 dist
+*.egg-info
+
+# coverage
+.coverage
+htmlcov
+coverage.xml
 
 # environment
 .env

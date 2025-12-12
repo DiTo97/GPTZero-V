@@ -3,6 +3,7 @@
 import platform
 from pathlib import Path
 
+
 # MIME type to file extension mapping
 MIME_MAP = {
     "image/avif": ".avif",

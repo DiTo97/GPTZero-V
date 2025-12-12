@@ -11,15 +11,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from gptzero_api import __version__
 from gptzero_api.models import (
-    AuthenticityResultResponse,
-    C2PAMetadataResponse,
-    EXIFMetadataResponse,
     ErrorResponse,
     HealthResponse,
-    SoftwareAgentResponse,
     VerifyImageResponse,
 )
 from gptzero_api.service import VerificationService
+
 
 # Configure logging
 logging.basicConfig(
@@ -129,7 +126,7 @@ def make_app() -> FastAPI:
             file_data = await file.read()
         except Exception as e:
             logger.error(f"Error reading file: {e}")
-            raise HTTPException(status_code=400, detail="Error reading file")
+            raise HTTPException(status_code=400, detail="Error reading file") from e
 
         # Verify image
         try:
@@ -141,7 +138,7 @@ def make_app() -> FastAPI:
             return result
         except Exception as e:
             logger.error(f"Error verifying image: {e}")
-            raise HTTPException(status_code=500, detail="Error verifying image")
+            raise HTTPException(status_code=500, detail="Error verifying image") from e
 
     return app
 

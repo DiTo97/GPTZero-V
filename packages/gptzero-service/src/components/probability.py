@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 
 
-def Probability(probability: int) -> tuple[str, go.Figure]:
+def Probability(probability: int) -> tuple[str, go.Figure]:  # noqa: N802
     """
     Displays a circular widget filled based on the probability value.
     The color and text change dynamically based on the authenticity probability range.

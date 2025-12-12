@@ -6,14 +6,16 @@ from pathlib import Path
 
 import streamlit as st
 
+
 # Add SDK to path
 sdk_path = Path(__file__).parent.parent.parent / "gptzero-sdk" / "src"
 sys.path.insert(0, str(sdk_path))
 
-from gptzero_sdk import GPTZeroClient
+from gptzero_sdk import GPTZeroClient  # noqa: E402
 
-from components.card import Card
-from components.probability import Probability
+from components.card import Card  # noqa: E402
+from components.probability import Probability  # noqa: E402
+
 
 # Get API URL from environment or use default
 API_URL = os.getenv("GPTZERO_API_URL", "http://localhost:8000")
@@ -21,7 +23,7 @@ API_URL = os.getenv("GPTZERO_API_URL", "http://localhost:8000")
 st.set_page_config(layout="wide", page_title="GPTZero-V")
 
 
-def Homepage():
+def Homepage():  # noqa: N802
     """Render the homepage with information."""
     st.markdown("""
         ### How GPTZero-V Works
@@ -78,7 +80,7 @@ def Homepage():
         """)
 
 
-def Authenticity():
+def Authenticity():  # noqa: N802
     """Render the authenticity verification interface."""
     # Create two columns for side-by-side layout
     col1, col2 = st.columns(2)  # Equal width columns

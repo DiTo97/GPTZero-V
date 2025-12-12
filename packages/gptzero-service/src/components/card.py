@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def Card(title: str, content: str, height: str | None = None) -> None:
+def Card(title: str, content: str, height: str | None = None) -> None:  # noqa: N802
     """
     Display a card with a title and content.
 

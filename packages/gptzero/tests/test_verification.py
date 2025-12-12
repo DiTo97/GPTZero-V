@@ -1,10 +1,8 @@
 """Tests for verification logic."""
 
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
-import pytest
-
-from gptzero.models import C2PAMetadata, EXIFMetadata, ImageInput, SoftwareAgent
+from gptzero.models import C2PAMetadata, EXIFMetadata, ImageInput
 from gptzero.verification import ImageVerifier
 
 

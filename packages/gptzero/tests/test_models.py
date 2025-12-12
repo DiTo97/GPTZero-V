@@ -132,7 +132,9 @@ class TestAuthenticityResult:
 
     def test_valid_probability(self):
         """Test valid probability values."""
-        result = AuthenticityResult(probability=50, is_likely_authentic=False, confidence_level="medium")
+        result = AuthenticityResult(
+            probability=50, is_likely_authentic=False, confidence_level="medium"
+        )
         assert result.probability == 50
 
     def test_invalid_probability_negative(self):
