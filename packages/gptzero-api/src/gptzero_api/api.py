@@ -47,15 +47,15 @@ def log_request(method: str, path: str, status: int, duration: float) -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifecycle manager for the FastAPI application."""
-    logger.info("Starting GPTZero API service")
+    logger.info("Starting GPTZero-V API service")
     yield
-    logger.info("Shutting down GPTZero API service")
+    logger.info("Shutting down GPTZero-V API service")
 
 
 def make_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     app = FastAPI(
-        title="GPTZero API",
+        title="GPTZero-V API",
         description="API for image authenticity verification",
         version=__version__,
         lifespan=lifespan,
@@ -109,7 +109,7 @@ def make_app() -> FastAPI:
         },
     )
     async def verify_image(
-        file: Annotated[UploadFile, File(description="Image file to verify")]
+        file: Annotated[UploadFile, File(description="Image file to verify")],
     ) -> VerifyImageResponse:
         """
         Verify image authenticity.

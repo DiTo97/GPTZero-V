@@ -1,4 +1,4 @@
-"""GPTZero - Image Authenticity Verification SDK."""
+"""GPTZero-V - Image Authenticity Verification SDK."""
 
 from gptzero.models import (
     AuthenticityResult,

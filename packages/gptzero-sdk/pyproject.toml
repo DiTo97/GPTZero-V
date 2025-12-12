@@ -1,7 +1,7 @@
 [project]
 name = "gptzero-sdk"
 version = "0.1.0"
-description = "Python SDK for GPTZero API"
+description = "Python SDK for GPTZero-V API"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]

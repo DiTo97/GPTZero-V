@@ -1,6 +1,6 @@
-# GPTZero Service
+# GPTZero-V Service
 
-Streamlit frontend for GPTZero image authenticity verification.
+Streamlit frontend for GPTZero-V image authenticity verification.
 
 ## Features
 
@@ -35,7 +35,7 @@ streamlit run packages/gptzero-service/src/handler.py
 
 ### Configuration
 
-Set the `GPTZERO_API_URL` environment variable to point to your GPTZero API instance:
+Set the `GPTZERO_API_URL` environment variable to point to your GPTZero-V API instance:
 
 ```bash
 export GPTZERO_API_URL=http://api.example.com:8000

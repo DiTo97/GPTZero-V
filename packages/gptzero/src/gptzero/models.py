@@ -1,4 +1,4 @@
-"""Base models for GPTZero SDK."""
+"""Base models for GPTZero-V SDK."""
 
 from dataclasses import dataclass
 from enum import Enum
@@ -126,8 +126,7 @@ class C2PAMetadata:
         """Check if metadata indicates AI generation."""
         # Check if generator name indicates AI generation
         if any(
-            ai_tool in self.generator_name
-            for ai_tool in ["ChatGPT", "DALL·E", "Dall-E", "OpenAI"]
+            ai_tool in self.generator_name for ai_tool in ["ChatGPT", "DALL·E", "Dall-E", "OpenAI"]
         ):
             return True
 

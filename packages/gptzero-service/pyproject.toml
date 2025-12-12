@@ -1,7 +1,7 @@
 [project]
 name = "gptzero-service"
 version = "0.1.0"
-description = "Streamlit frontend for GPTZero image authenticity verification"
+description = "Streamlit frontend for GPTZero-V image authenticity verification"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]

@@ -1,6 +1,6 @@
-# GPTZero SDK
+# GPTZero-V SDK
 
-Python SDK client for interacting with the GPTZero API.
+Python SDK client for interacting with the GPTZero-V API.
 
 ## Features
 
@@ -50,15 +50,15 @@ from gptzero_sdk import GPTZeroClient
 
 async def verify():
     client = GPTZeroClient(base_url="http://localhost:8000")
-    
+
     # Check health
     health = await client.health_async()
     print(f"Status: {health.status}")
-    
+
     # Verify image
     result = await client.verify_image_async(file_path="image.jpg")
     print(f"Authenticity: {result.authenticity.probability}%")
-    
+
     await client.aclose()
 
 asyncio.run(verify())

@@ -1,4 +1,4 @@
-# GPTZero API
+# GPTZero-V API
 
 FastAPI service for image authenticity verification.
 

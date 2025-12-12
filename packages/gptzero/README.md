@@ -1,4 +1,4 @@
-# GPTZero SDK
+# GPTZero-V SDK
 
 Python SDK for image authenticity verification through metadata analysis.
 

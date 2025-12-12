@@ -1,7 +1,7 @@
 [project]
 name = "gptzero"
 version = "0.1.0"
-description = "GPTZero SDK for image authenticity verification"
+description = "GPTZero-V SDK for image authenticity verification"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]

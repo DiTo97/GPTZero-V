@@ -1,4 +1,4 @@
-"""GPTZero SDK Client - Python client for GPTZero API."""
+"""GPTZero-V SDK Client - Python client for GPTZero-V API."""
 
 from gptzero_sdk.client import GPTZeroClient
 from gptzero_sdk.models import VerifyImageResponse

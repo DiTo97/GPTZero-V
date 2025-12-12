@@ -1,4 +1,4 @@
-"""GPTZero SDK Client."""
+"""GPTZero-V SDK Client."""
 
 from pathlib import Path
 from typing import BinaryIO
@@ -9,14 +9,14 @@ from gptzero_sdk.models import HealthResponse, VerifyImageResponse
 
 
 class GPTZeroClient:
-    """Client for GPTZero API."""
+    """Client for GPTZero-V API."""
 
     def __init__(self, base_url: str = "http://localhost:8000", timeout: float = 30.0):
         """
-        Initialize the GPTZero client.
+        Initialize the GPTZero-V client.
 
         Args:
-            base_url: Base URL of the GPTZero API
+            base_url: Base URL of the GPTZero-V API
             timeout: Request timeout in seconds
         """
         self.base_url = base_url.rstrip("/")
