@@ -1,0 +1,33 @@
+[project]
+name = "gptzero-service"
+version = "0.1.0"
+description = "Streamlit frontend for GPTZero image authenticity verification"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
+license = {text = "MIT"}
+
+dependencies = [
+    "streamlit>=1.0.0,<2",
+    "plotly>=6.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "YTT", "B", "C4", "SIM"]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["components"]
+lines-after-imports = 2
