@@ -6,10 +6,15 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened, closed ]
 
+permissions:
+  contents: read
+
 jobs:
   test-gptzero:
     name: Test GPTZero SDK
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -41,6 +46,8 @@ jobs:
   test-api:
     name: Test GPTZero API
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -66,6 +73,8 @@ jobs:
   test-sdk:
     name: Test GPTZero SDK Client
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
@@ -89,6 +98,8 @@ jobs:
   lint:
     name: Lint All Packages
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v4
