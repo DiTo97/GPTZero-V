@@ -97,7 +97,7 @@ def Authenticity():  # noqa: N802
 
             if uploaded_file is not None:
                 file_bytes = uploaded_file.read()
-                st.image(file_bytes, caption="", width="content")
+                st.image(file_bytes, caption="", width="stretch")
 
     # Second column for analysis cards
     with col2:
@@ -123,9 +123,7 @@ def Authenticity():  # noqa: N802
                     # Create nested columns to center the chart
                     _, center_col, _ = st.columns([1, 1, 1])
                     with center_col:
-                        st.plotly_chart(
-                            fig, use_container_width=True, config={"displayModeBar": False}
-                        )
+                        st.plotly_chart(fig, config={"displayModeBar": False})
 
                     Card(title="Image Authenticity", content=message)
 

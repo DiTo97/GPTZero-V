@@ -59,17 +59,33 @@ def get_c2pa_binary_path() -> Path | None:
     # Try to find the binary relative to this file
     script_dir = Path(__file__).resolve().parent
 
-    # Check package-local resources (packages/gptzero/resources)
+    # Method 1: Check sibling resources directory (for installed package)
+    # packages/gptzero/src/gptzero/utils.py -> packages/gptzero/resources
+    pkg_resources = (
+        script_dir.parent.parent / "resources" / "c2patool" / c2patool_version / platform_dir
+    )
+    pkg_binary = pkg_resources / binary_name
+    if pkg_binary.exists():
+        return pkg_binary
+
+    # Method 2: Check package-local resources (for editable install)
+    # src/gptzero/utils.py -> resources/
     local_resources = script_dir.parent / "resources" / "c2patool" / c2patool_version / platform_dir
     local_binary = local_resources / binary_name
     if local_binary.exists():
         return local_binary
 
-    # Try to find repo root more robustly
+    # Method 3: Try to find repo root more robustly
     current = script_dir
     for _ in range(10):  # Prevent infinite loop
         if (current / ".git").exists() or (current / "pyproject.toml").exists():
-            # Found repo root, check old location
+            # Check new location (packages/gptzero/resources)
+            new_resources = current / "packages" / "gptzero" / "resources"
+            new_binary = new_resources / "c2patool" / c2patool_version / platform_dir / binary_name
+            if new_binary.exists():
+                return new_binary
+
+            # Check old location (src/authenticity/resources)
             old_resources = current / "src" / "authenticity" / "resources"
             old_binary = old_resources / "c2patool" / c2patool_version / platform_dir / binary_name
             if old_binary.exists():
