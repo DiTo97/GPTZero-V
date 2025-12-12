@@ -34,5 +34,9 @@ class EXIFHandler(MetadataHandler):
             else:
                 metadata = EXIFMetadata(has_exif=False)
                 return True, metadata, None
-        except Exception as e:
-            return False, None, f"Error extracting EXIF: {e!s}"
+        except Exception:
+            # If EXIF parsing fails (e.g., corrupted data, unsupported format),
+            # treat it as "no EXIF data" rather than an error.
+            # This is expected for many valid images.
+            metadata = EXIFMetadata(has_exif=False)
+            return True, metadata, None
