@@ -43,43 +43,38 @@ def get_c2pa_binary_path() -> Path | None:
     current_platform = platform.system()
     c2patool_version = "v0.16.1"
 
-    # Try to find the binary relative to the original src location
-    # This handles the case where resources are in the old location
+    # Determine binary filename based on platform
+    if current_platform == "Windows":
+        binary_name = "c2patool.exe"
+        platform_dir = "Windows"
+    elif current_platform == "Linux":
+        binary_name = "c2patool"
+        platform_dir = "Linux"
+    elif current_platform == "Darwin":
+        binary_name = "c2patool"
+        platform_dir = "macOS"
+    else:
+        return None
+
+    # Try to find the binary relative to this file
     script_dir = Path(__file__).resolve().parent
-    repo_root = script_dir.parent.parent.parent.parent.parent
 
-    # Check old location first (src/authenticity/resources)
-    old_resources_dir = repo_root / "src" / "authenticity" / "resources"
-    c2patool_dir = old_resources_dir / "c2patool" / c2patool_version
+    # Check package-local resources (packages/gptzero/resources)
+    local_resources = script_dir.parent / "resources" / "c2patool" / c2patool_version / platform_dir
+    local_binary = local_resources / binary_name
+    if local_binary.exists():
+        return local_binary
 
-    if current_platform == "Windows":
-        binary_path = c2patool_dir / current_platform / "c2patool.exe"
-    elif current_platform == "Linux":
-        binary_path = c2patool_dir / current_platform / "c2patool"
-    elif current_platform == "Darwin":
-        binary_path = c2patool_dir / "macOS" / "c2patool"
-    else:
-        return None
-
-    # Check if the binary exists in old location
-    if binary_path.exists():
-        return binary_path
-
-    # Try new location (packages/gptzero/resources)
-    new_resources_dir = repo_root / "packages" / "gptzero" / "resources"
-    c2patool_dir = new_resources_dir / "c2patool" / c2patool_version
-
-    if current_platform == "Windows":
-        binary_path = c2patool_dir / current_platform / "c2patool.exe"
-    elif current_platform == "Linux":
-        binary_path = c2patool_dir / current_platform / "c2patool"
-    elif current_platform == "Darwin":
-        binary_path = c2patool_dir / "macOS" / "c2patool"
-    else:
-        return None
-
-    # Check if the binary exists in new location
-    if binary_path.exists():
-        return binary_path
+    # Try to find repo root more robustly
+    current = script_dir
+    for _ in range(10):  # Prevent infinite loop
+        if (current / ".git").exists() or (current / "pyproject.toml").exists():
+            # Found repo root, check old location
+            old_resources = current / "src" / "authenticity" / "resources"
+            old_binary = old_resources / "c2patool" / c2patool_version / platform_dir / binary_name
+            if old_binary.exists():
+                return old_binary
+            break
+        current = current.parent
 
     return None

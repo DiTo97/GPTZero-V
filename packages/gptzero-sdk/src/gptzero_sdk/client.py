@@ -145,7 +145,9 @@ class GPTZeroClient:
 
         if file_path is not None:
             path = Path(file_path)
-            return {"file": (path.name, open(path, "rb"), self._guess_mime_type(path))}
+            with open(path, "rb") as f:
+                file_data = f.read()
+            return {"file": (path.name, file_data, self._guess_mime_type(path))}
 
         if file_data is not None:
             if filename is None:
