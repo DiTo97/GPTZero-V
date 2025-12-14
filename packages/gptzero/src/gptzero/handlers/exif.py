@@ -11,9 +11,7 @@ from gptzero.models import EXIFMetadata
 class EXIFHandler(MetadataHandler):
     """Handler for EXIF metadata extraction."""
 
-    def extract(
-        self, data: bytes, mime_type: str
-    ) -> tuple[bool, EXIFMetadata | None, str | None]:
+    def extract(self, data: bytes, mime_type: str) -> tuple[bool, EXIFMetadata | None, str | None]:
         """
         Extract EXIF metadata from image data.
 
@@ -34,9 +32,9 @@ class EXIFHandler(MetadataHandler):
             else:
                 metadata = EXIFMetadata(has_exif=False)
                 return True, metadata, None
-        except Exception:
+        except Exception as e:
             # If EXIF parsing fails (e.g., corrupted data, unsupported format),
             # treat it as "no EXIF data" rather than an error.
             # This is expected for many valid images.
             metadata = EXIFMetadata(has_exif=False)
-            return True, metadata, None
+            return True, metadata, str(e)
