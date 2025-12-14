@@ -1,0 +1,72 @@
+[project]
+name = "gptzero"
+version = "0.1.0"
+description = "GPTZero-V SDK for image authenticity verification"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
+license = {text = "MIT"}
+keywords = ["content-authenticity", "image-verification", "metadata", "c2pa", "exif"]
+
+dependencies = [
+    "exif>=1.0.0,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+    "--cov=gptzero",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+[tool.ruff]
+src = ["src"]
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "N",
+    "UP",
+    "YTT",
+    "B",
+    "C4",
+    "SIM",
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["gptzero"]
+lines-after-imports = 2
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
