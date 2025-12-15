@@ -6,39 +6,22 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
     python3 \
-    python3-pip \
-    python3-venv \
-    python3-dev \
-    build-essential \
     curl \
     software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/bin/python3 /usr/bin/python
-
 WORKDIR /app
 
-# Create virtual environment
-RUN python -m venv /app/.venv
-ENV PATH="/app/.venv/bin:$PATH"
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
 
-# Upgrade pip
-RUN python -m pip install --upgrade pip
-
-# Copy all packages
+# Copy project files
+COPY pyproject.toml uv.lock /app/
 COPY packages/ /app/packages/
 
-# Install gptzero (core SDK)
-RUN cd /app/packages/gptzero && pip install --no-cache-dir -e .
-
-# Install gptzero-api
-RUN cd /app/packages/gptzero-api && pip install --no-cache-dir -e .
-
-# Install gptzero-sdk
-RUN cd /app/packages/gptzero-sdk && pip install --no-cache-dir -e .
-
-# Install gptzero-service
-RUN cd /app/packages/gptzero-service && pip install --no-cache-dir -e .
+# Install all packages using uv
+RUN uv sync --all-packages --frozen
 
 # Make c2patool executable
 RUN chmod +x /app/packages/gptzero/resources/c2patool/v0.16.1/Linux/c2patool || true
@@ -54,7 +37,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Starting GPTZero API on port 8000..."\n\
-uvicorn gptzero_api.api:app --host 0.0.0.0 --port 8000 &\n\
+uv run --package gptzero-api gptzero-api &\n\
 API_PID=$!\n\
 echo "API started with PID $API_PID"\n\
 \n\
@@ -63,7 +46,7 @@ sleep 5\n\
 \n\
 echo "Starting GPTZero Service on port 8501..."\n\
 export GPTZERO_API_URL=http://localhost:8000\n\
-streamlit run /app/packages/gptzero-service/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
+uv run --package gptzero-service streamlit run /app/packages/gptzero-service/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
 SERVICE_PID=$!\n\
 echo "Service started with PID $SERVICE_PID"\n\
 \n\

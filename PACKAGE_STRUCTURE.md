@@ -152,17 +152,17 @@ gptzero-service/
 
 ## Docker Deployment
 
-The `Dockerfile` runs both API and service from a single image:
+The `Dockerfile` runs both API and service from a single image using uv:
 
 ```dockerfile
 # Multi-stage build
 FROM ubuntu:24.04 AS base
 
-# Install all packages
-RUN cd /app/packages/gptzero && pip install -e .
-RUN cd /app/packages/gptzero-api && pip install -e .
-RUN cd /app/packages/gptzero-sdk && pip install -e .
-RUN cd /app/packages/gptzero-service && pip install -e .
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install all packages using uv workspace
+RUN uv sync --all-packages --frozen
 
 # Expose both ports
 EXPOSE 8000 8501
@@ -212,33 +212,31 @@ GitHub Actions workflow (`.github/workflows/test.yml`):
 
 1. **Install packages**:
    ```bash
-   cd packages/gptzero && pip install -e ".[dev]"
-   cd packages/gptzero-api && pip install -e ".[dev]"
-   cd packages/gptzero-sdk && pip install -e ".[dev]"
-   cd packages/gptzero-service && pip install -e .
+   # Install uv if not already installed
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Sync all workspace packages
+   uv sync --all-packages
    ```
 
 2. **Run tests**:
    ```bash
-   cd packages/gptzero
-   pytest tests/ -v --cov=gptzero
+   uv run --package gptzero pytest packages/gptzero/tests/ -v --cov=gptzero
    ```
 
 3. **Run linting**:
    ```bash
-   ruff check src/ tests/
+   uv run ruff check packages/gptzero/src/ packages/gptzero/tests/
    ```
 
 4. **Start services**:
    ```bash
    # Terminal 1: API
-   cd packages/gptzero-api
-   uvicorn gptzero_api.api:app --reload
+   uv run --package gptzero-api gptzero-api
    
    # Terminal 2: Service
-   cd packages/gptzero-service
    export GPTZERO_API_URL=http://localhost:8000
-   streamlit run src/handler.py
+   uv run --package gptzero-service streamlit run packages/gptzero-service/src/handler.py
    ```
 
 ### Docker Development
