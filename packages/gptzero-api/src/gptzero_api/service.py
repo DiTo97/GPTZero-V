@@ -1,16 +1,8 @@
 """Service layer for verification logic."""
 
-import sys
-from pathlib import Path
+from gptzero import ImageInput, ImageVerifier
 
-
-# Add gptzero package to path
-gptzero_path = Path(__file__).parent.parent.parent.parent / "gptzero" / "src"
-sys.path.insert(0, str(gptzero_path))
-
-from gptzero import ImageInput, ImageVerifier  # noqa: E402
-
-from gptzero_api.models import (  # noqa: E402
+from gptzero_api.models import (
     AuthenticityResultResponse,
     C2PAMetadataResponse,
     EXIFMetadataResponse,

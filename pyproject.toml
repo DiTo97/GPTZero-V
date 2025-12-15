@@ -96,3 +96,11 @@ lines-after-imports = 2
 
 [tool.uv]
 default-groups = ["contrib"]
+
+[tool.uv.workspace]
+members = [
+    "packages/gptzero",
+    "packages/gptzero-sdk",
+    "packages/gptzero-api",
+    "packages/gptzero-service",
+]

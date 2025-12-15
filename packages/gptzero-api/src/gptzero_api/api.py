@@ -144,3 +144,15 @@ def make_app() -> FastAPI:
 
 
 app = make_app()
+
+
+def main() -> None:
+    """Entry point for running the API with uvicorn."""
+    import uvicorn
+
+    uvicorn.run(
+        "gptzero_api.api:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=False,
+    )
