@@ -9,6 +9,7 @@ license = {text = "MIT"}
 keywords = ["content-authenticity", "image-verification", "metadata", "c2pa", "exif"]
 
 dependencies = [
+    "c2pa-python>=0.27.0,<1.0.0",
     "exif>=1.0.0,<2",
 ]
 

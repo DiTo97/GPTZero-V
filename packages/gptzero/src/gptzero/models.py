@@ -68,6 +68,8 @@ class C2PAMetadata:
         """
         Parse a C2PA manifest dictionary and extract relevant metadata.
 
+        Supports both c2patool binary format and c2pa-python library format.
+
         Args:
             manifest: Dictionary containing C2PA manifest data
 
@@ -76,6 +78,85 @@ class C2PAMetadata:
         """
         active_manifest_id = manifest.get("active_manifest")
         active_manifest = manifest.get("manifests", {}).get(active_manifest_id, {})
+
+        # Try c2pa-python format first (simpler structure)
+        if "claim_generator_info" in active_manifest and isinstance(
+            active_manifest["claim_generator_info"], list
+        ):
+            return cls._from_c2pa_python_format(manifest, active_manifest)
+
+        # Fall back to c2patool binary format
+        return cls._from_c2patool_format(manifest, active_manifest)
+
+    @classmethod
+    def _from_c2pa_python_format(
+        cls, manifest: dict[str, Any], active_manifest: dict[str, Any]
+    ) -> "C2PAMetadata":
+        """Parse manifest from c2pa-python library format."""
+        # Extract basic metadata from active manifest
+        instance_id = active_manifest.get("instance_id", "Unknown")
+        title = active_manifest.get("title", "Unknown")
+
+        # Get signature info
+        signature_info = active_manifest.get("signature_info", {})
+        issuer = signature_info.get("issuer", "Unknown")
+
+        # Get claim generator info
+        claim_generator_info = active_manifest.get("claim_generator_info", [])
+        generator_name = "Unknown"
+        if claim_generator_info and isinstance(claim_generator_info, list):
+            generator_name = claim_generator_info[0].get("name", "Unknown")
+
+        # Extract software agents and digital source type from ingredients
+        software_agents: list[SoftwareAgent] = []
+        digital_source_type: str | None = None
+
+        ingredients = active_manifest.get("ingredients", [])
+        for ingredient in ingredients:
+            ingredient_manifest_id = ingredient.get("active_manifest")
+            if ingredient_manifest_id:
+                ingredient_manifest = manifest.get("manifests", {}).get(
+                    ingredient_manifest_id, {}
+                )
+
+                # Look for actions in ingredient assertions
+                assertions = ingredient_manifest.get("assertions", [])
+                for assertion in assertions:
+                    if assertion.get("label") in ("c2pa.actions", "c2pa.actions.v2"):
+                        actions_data = assertion.get("data", {})
+                        actions = actions_data.get("actions", [])
+
+                        for action in actions:
+                            agent_name = action.get("softwareAgent", {}).get("name")
+                            if agent_name and agent_name not in [
+                                sa.name for sa in software_agents
+                            ]:
+                                action_type = action.get("action", "").replace("c2pa.", "")
+                                software_agents.append(
+                                    SoftwareAgent(name=agent_name, action=action_type)
+                                )
+
+                            if "digitalSourceType" in action:
+                                dst = action.get("digitalSourceType", "")
+                                if "trainedAlgorithmicMedia" in dst:
+                                    digital_source_type = (
+                                        "This content was generated with an AI tool"
+                                    )
+
+        return cls(
+            instance_id=instance_id,
+            title=title,
+            issuer=issuer,
+            generator_name=generator_name,
+            digital_source_type=digital_source_type,
+            software_agents=software_agents,
+        )
+
+    @classmethod
+    def _from_c2patool_format(
+        cls, manifest: dict[str, Any], active_manifest: dict[str, Any]
+    ) -> "C2PAMetadata":
+        """Parse manifest from c2patool binary format (legacy)."""
         claim = active_manifest.get("claim", {})
         claim_generator_info = claim.get("claim_generator_info", {})
         instance_id = claim.get("instanceID", "Unknown")
