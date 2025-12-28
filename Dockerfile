@@ -68,7 +68,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Starting GPTZero API on port 8000..."\n\
-gptzero-api &\n\
+/app/.venv/bin/gptzero-api &\n\
 API_PID=$!\n\
 echo "API started with PID $API_PID"\n\
 \n\
@@ -77,7 +77,7 @@ sleep 5\n\
 \n\
 echo "Starting GPTZero Service on port 8501..."\n\
 export GPTZERO_API_URL=http://localhost:8000\n\
-streamlit run /app/packages/gptzero-service/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
+/app/.venv/bin/streamlit run /app/packages/gptzero-service/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
 SERVICE_PID=$!\n\
 echo "Service started with PID $SERVICE_PID"\n\
 \n\

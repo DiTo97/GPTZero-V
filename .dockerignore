@@ -32,11 +32,6 @@ htmlcov
 *.swo
 *~
 
-# Documentation
-*.md
-!README.md
-docs
-
 # CI/CD
 .github
 
