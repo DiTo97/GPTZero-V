@@ -21,10 +21,10 @@ WORKDIR /app
 # Copy workspace configuration and package definitions
 # This allows uv to understand workspace structure without copying source code
 COPY pyproject.toml uv.lock ./
-COPY packages/gptzero/pyproject.toml ./packages/gptzero/
-COPY packages/gptzero-sdk/pyproject.toml ./packages/gptzero-sdk/
-COPY packages/gptzero-api/pyproject.toml ./packages/gptzero-api/
-COPY packages/gptzero-service/pyproject.toml ./packages/gptzero-service/
+COPY packages/gptzero/pyproject.toml packages/gptzero/README.md ./packages/gptzero/
+COPY packages/gptzero-sdk/pyproject.toml packages/gptzero-sdk/README.md ./packages/gptzero-sdk/
+COPY packages/gptzero-api/pyproject.toml packages/gptzero-api/README.md ./packages/gptzero-api/
+COPY packages/gptzero-service/pyproject.toml packages/gptzero-service/README.md ./packages/gptzero-service/
 
 # Install dependencies (this layer is cached unless lock/config files change)
 RUN --mount=type=cache,target=/root/.cache/uv \
