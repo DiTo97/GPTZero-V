@@ -77,6 +77,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Install all packages using uv workspace
 uv sync --all-packages
+
+# For development (includes pytest, ruff, etc.)
+uv sync --all-packages --group dev
 ```
 
 ### Running Services Locally

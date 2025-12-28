@@ -237,6 +237,9 @@ GitHub Actions workflow (`.github/workflows/test.yml`):
    
    # Sync all workspace packages
    uv sync --all-packages
+   
+   # For development (includes pytest, ruff, etc.)
+   uv sync --all-packages --group dev
    ```
 
 2. **Run tests**:
