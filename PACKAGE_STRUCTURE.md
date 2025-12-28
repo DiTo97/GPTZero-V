@@ -152,24 +152,44 @@ gptzero-service/
 
 ## Docker Deployment
 
-The `Dockerfile` runs both API and service from a single image:
+The `Dockerfile` uses an optimized multi-stage build with uv for efficient layer caching:
 
 ```dockerfile
-# Multi-stage build
-FROM ubuntu:24.04 AS base
+# Stage 1: Builder with uv
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-# Install all packages
-RUN cd /app/packages/gptzero && pip install -e .
-RUN cd /app/packages/gptzero-api && pip install -e .
-RUN cd /app/packages/gptzero-sdk && pip install -e .
-RUN cd /app/packages/gptzero-service && pip install -e .
+# Copy workspace configuration and package definitions
+COPY pyproject.toml uv.lock ./
+COPY packages/gptzero/pyproject.toml ./packages/gptzero/
+COPY packages/gptzero-sdk/pyproject.toml ./packages/gptzero-sdk/
+COPY packages/gptzero-api/pyproject.toml ./packages/gptzero-api/
+COPY packages/gptzero-service/pyproject.toml ./packages/gptzero-service/
 
-# Expose both ports
-EXPOSE 8000 8501
+# Install dependencies (cached separately)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --no-install-project --all-packages
 
-# Start both services
-CMD ["/app/start.sh"]
+# Copy source code
+COPY . /app
+
+# Install workspace packages
+RUN uv sync --locked --all-packages
+
+# Stage 2: Final runtime image without uv
+FROM python:3.12-slim-bookworm
+# Copy virtual environment from builder
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
 ```
+
+**Key features**:
+- Multi-stage build separates dependencies from source code
+- Workspace package configs copied separately for better caching
+- BuildKit cache mounts for faster rebuilds
+- Bytecode compilation for faster startup
+- Final image without uv for smaller size
+- Non-root user for security
+- Separate dependency layer for optimal caching
 
 **Ports**:
 - `8000` - API service
@@ -212,33 +232,34 @@ GitHub Actions workflow (`.github/workflows/test.yml`):
 
 1. **Install packages**:
    ```bash
-   cd packages/gptzero && pip install -e ".[dev]"
-   cd packages/gptzero-api && pip install -e ".[dev]"
-   cd packages/gptzero-sdk && pip install -e ".[dev]"
-   cd packages/gptzero-service && pip install -e .
+   # Install uv if not already installed
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Sync all workspace packages
+   uv sync --all-packages
+   
+   # For development (includes pytest, ruff, etc.)
+   uv sync --all-packages --group dev
    ```
 
 2. **Run tests**:
    ```bash
-   cd packages/gptzero
-   pytest tests/ -v --cov=gptzero
+   uv run --package gptzero pytest packages/gptzero/tests/ -v --cov=gptzero
    ```
 
 3. **Run linting**:
    ```bash
-   ruff check src/ tests/
+   uv run ruff check packages/gptzero/src/ packages/gptzero/tests/
    ```
 
 4. **Start services**:
    ```bash
    # Terminal 1: API
-   cd packages/gptzero-api
-   uvicorn gptzero_api.api:app --reload
+   uv run --package gptzero-api gptzero-api
    
    # Terminal 2: Service
-   cd packages/gptzero-service
    export GPTZERO_API_URL=http://localhost:8000
-   streamlit run src/handler.py
+   uv run --package gptzero-service streamlit run packages/gptzero-service/src/handler.py
    ```
 
 ### Docker Development

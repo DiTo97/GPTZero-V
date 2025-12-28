@@ -23,6 +23,12 @@ contrib = [
   "pre-commit<5",
   "setuptools>80",
 ]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=4.1.0",
+  "pytest-asyncio>=0.23.0",
+  "ruff>=0.1.0",
+]
 
 [tool.ruff]
 src = ["src"]
@@ -96,3 +102,11 @@ lines-after-imports = 2
 
 [tool.uv]
 default-groups = ["contrib"]
+
+[tool.uv.workspace]
+members = [
+    "packages/gptzero",
+    "packages/gptzero-sdk",
+    "packages/gptzero-api",
+    "packages/gptzero-service",
+]

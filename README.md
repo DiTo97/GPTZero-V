@@ -72,24 +72,25 @@ Access the services:
 git clone https://github.com/DiTo97/GPTZero-V.git
 cd GPTZero-V
 
-# Install all packages
-cd packages/gptzero && pip install -e ".[dev]" && cd ../..
-cd packages/gptzero-api && pip install -e ".[dev]" && cd ../..
-cd packages/gptzero-sdk && pip install -e ".[dev]" && cd ../..
-cd packages/gptzero-service && pip install -e . && cd ../..
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install all packages using uv workspace
+uv sync --all-packages
+
+# For development (includes pytest, ruff, etc.)
+uv sync --all-packages --group dev
 ```
 
 ### Running Services Locally
 
 ```bash
 # Terminal 1: Start the API
-cd packages/gptzero-api
-uvicorn gptzero_api.api:app --host 0.0.0.0 --port 8000
+uv run --package gptzero-api gptzero-api
 
 # Terminal 2: Start the Service
-cd packages/gptzero-service
 export GPTZERO_API_URL=http://localhost:8000
-streamlit run src/handler.py
+uv run --package gptzero-service streamlit run packages/gptzero-service/src/handler.py
 ```
 
 ## 💻 Usage Examples

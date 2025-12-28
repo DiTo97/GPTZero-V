@@ -1,20 +1,12 @@
 """Streamlit handler for GPTZero-V service using SDK."""
 
 import os
-import sys
-from pathlib import Path
 
 import streamlit as st
+from gptzero_sdk import GPTZeroClient
 
-
-# Add SDK to path
-sdk_path = Path(__file__).parent.parent.parent / "gptzero-sdk" / "src"
-sys.path.insert(0, str(sdk_path))
-
-from gptzero_sdk import GPTZeroClient  # noqa: E402
-
-from components.card import Card  # noqa: E402
-from components.probability import Probability  # noqa: E402
+from components.card import Card
+from components.probability import Probability
 
 
 # Get API URL from environment or use default
