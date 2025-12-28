@@ -8,8 +8,9 @@ from gptzero.verification import ImageVerifier
 
 
 # Path to example images
-# test_c2pa_integration.py -> tests -> gptzero -> packages -> GPTZero-V -> examples
-EXAMPLES_DIR = Path(__file__).parent.parent.parent.parent / "examples"
+# Use parents[3] for more robust path traversal
+# test_c2pa_integration.py -> tests (0) -> gptzero (1) -> packages (2) -> GPTZero-V (3) -> examples
+EXAMPLES_DIR = Path(__file__).parents[3] / "examples"
 
 
 class TestC2PAHandlerIntegration:

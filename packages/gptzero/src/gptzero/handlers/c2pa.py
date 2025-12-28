@@ -12,10 +12,6 @@ from gptzero.models import C2PAMetadata
 class C2PAHandler(MetadataHandler):
     """Handler for C2PA metadata extraction using c2pa-python bindings."""
 
-    def __init__(self):
-        """Initialize C2PA handler."""
-        pass
-
     def extract(
         self, data: bytes, mime_type: str
     ) -> tuple[bool, C2PAMetadata | None, str | None]:
