@@ -141,8 +141,8 @@ docker run -p 8000:8000 -p 8501:8501 gptzero-v:0.1
 
 **Files**:
 - `README.md` - Updated main README
-- `PACKAGE_STRUCTURE.md` - Architecture guide
-- `IMPLEMENTATION_SUMMARY.md` - This file
+- `docs/package-structure.md` - Architecture guide
+- `docs/implementation-summary.md` - This file
 - `packages/gptzero/README.md` - SDK documentation
 - `packages/gptzero-api/README.md` - API documentation
 - `packages/gptzero-sdk/README.md` - Client documentation
@@ -341,13 +341,14 @@ GPTZero-V/
 │   ├── gptzero-api/      # FastAPI service
 │   ├── gptzero-sdk/      # Python client
 │   └── gptzero-service/  # Streamlit frontend
+├── docs/
+│   ├── package-structure.md       # Architecture guide
+│   └── implementation-summary.md  # This file
 ├── .github/
 │   └── workflows/
 │       └── test.yml      # CI/CD pipeline
 ├── Dockerfile            # Multi-service Docker
-├── README.md             # Updated documentation
-├── PACKAGE_STRUCTURE.md  # Architecture guide
-└── IMPLEMENTATION_SUMMARY.md  # This file
+└── README.md             # Updated documentation
 ```
 
 ---

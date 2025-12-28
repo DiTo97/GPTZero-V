@@ -9,6 +9,7 @@ license = {file = "LICENSE"}
 keywords = ["content-authenticity", "heuristic-algorithm", "image-generation", "metadata"]
 dependencies = [
   "exif>1,<2",
+  "filelock>=3.20.1",
   "plotly>6",
   "protobuf>5.29.5",
   "requests>2.32.4",
@@ -31,7 +32,6 @@ dev = [
 ]
 
 [tool.ruff]
-src = ["src"]
 exclude = [
   ".git-rewrite",
   ".git",
@@ -97,7 +97,6 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["authenticity", "components"]
 lines-after-imports = 2
 
 [tool.uv]
