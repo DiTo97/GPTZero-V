@@ -18,16 +18,22 @@ ENV UV_NO_DEV=1
 
 WORKDIR /app
 
-# First, install dependencies (this layer is cached unless lock file changes)
+# Copy workspace configuration and package definitions
+# This allows uv to understand workspace structure without copying source code
+COPY pyproject.toml uv.lock ./
+COPY packages/gptzero/pyproject.toml ./packages/gptzero/
+COPY packages/gptzero-sdk/pyproject.toml ./packages/gptzero-sdk/
+COPY packages/gptzero-api/pyproject.toml ./packages/gptzero-api/
+COPY packages/gptzero-service/pyproject.toml ./packages/gptzero-service/
+
+# Install dependencies (this layer is cached unless lock/config files change)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --all-packages
 
-# Then, copy the source code and install the workspace packages
+# Then, copy the rest of the source code
 COPY . /app
 
-# Install the project and workspace packages
+# Install the workspace packages (source code)
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --all-packages
 

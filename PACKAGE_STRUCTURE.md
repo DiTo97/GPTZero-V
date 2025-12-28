@@ -157,11 +157,23 @@ The `Dockerfile` uses an optimized multi-stage build with uv for efficient layer
 ```dockerfile
 # Stage 1: Builder with uv
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+
+# Copy workspace configuration and package definitions
+COPY pyproject.toml uv.lock ./
+COPY packages/gptzero/pyproject.toml ./packages/gptzero/
+COPY packages/gptzero-sdk/pyproject.toml ./packages/gptzero-sdk/
+COPY packages/gptzero-api/pyproject.toml ./packages/gptzero-api/
+COPY packages/gptzero-service/pyproject.toml ./packages/gptzero-service/
+
 # Install dependencies (cached separately)
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --all-packages
+
+# Copy source code
+COPY . /app
+
+# Install workspace packages
+RUN uv sync --locked --all-packages
 
 # Stage 2: Final runtime image without uv
 FROM python:3.12-slim-bookworm
@@ -172,6 +184,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 **Key features**:
 - Multi-stage build separates dependencies from source code
+- Workspace package configs copied separately for better caching
 - BuildKit cache mounts for faster rebuilds
 - Bytecode compilation for faster startup
 - Final image without uv for smaller size
