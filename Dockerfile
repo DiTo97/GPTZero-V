@@ -2,8 +2,7 @@
 
 # Use specific Python version for consistency
 ARG PYTHON_VERSION=3.12
-# Use Ubuntu 24.04 for GLIBC 2.39 compatibility (required by c2patool)
-ARG PYTHON_IMAGE=ubuntu:24.04
+ARG PYTHON_IMAGE=python:${PYTHON_VERSION}-slim-bookworm
 
 # Stage 1: Builder - Install dependencies with uv
 FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION}-bookworm-slim AS builder
@@ -38,29 +37,16 @@ COPY . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --all-packages
 
-# Make c2patool executable
-RUN chmod +x /app/packages/gptzero/resources/c2patool/v0.16.1/Linux/c2patool || true
-
 # Stage 2: Final runtime image without uv
 FROM ${PYTHON_IMAGE}
-
-ARG PYTHON_VERSION
 
 # Create non-root user for security
 RUN groupadd --system --gid 999 appuser \
     && useradd --system --gid 999 --uid 999 --create-home appuser
 
-# Install Python and curl for healthchecks
+# Install curl for healthchecks
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        python${PYTHON_VERSION} \
-        python${PYTHON_VERSION}-venv \
-        curl \
-    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 \
-    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
-    && mkdir -p /usr/local/bin \
-    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/local/bin/python3 \
-    && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/local/bin/python \
+    && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the application and virtual environment from builder
