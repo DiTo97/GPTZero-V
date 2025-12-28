@@ -152,24 +152,31 @@ gptzero-service/
 
 ## Docker Deployment
 
-The `Dockerfile` runs both API and service from a single image using uv:
+The `Dockerfile` uses an optimized multi-stage build with uv for efficient layer caching:
 
 ```dockerfile
-# Multi-stage build
-FROM ubuntu:24.04 AS base
+# Stage 1: Builder with uv
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+# Install dependencies (cached separately)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --all-packages
 
-# Install uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install all packages using uv workspace
-RUN uv sync --all-packages --frozen
-
-# Expose both ports
-EXPOSE 8000 8501
-
-# Start both services
-CMD ["/app/start.sh"]
+# Stage 2: Final runtime image without uv
+FROM python:3.12-slim-bookworm
+# Copy virtual environment from builder
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
 ```
+
+**Key features**:
+- Multi-stage build separates dependencies from source code
+- BuildKit cache mounts for faster rebuilds
+- Bytecode compilation for faster startup
+- Final image without uv for smaller size
+- Non-root user for security
+- Separate dependency layer for optimal caching
 
 **Ports**:
 - `8000` - API service
