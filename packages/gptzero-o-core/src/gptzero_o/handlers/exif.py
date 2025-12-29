@@ -4,8 +4,8 @@ import io
 
 from exif import Image as ExifImage
 
-from gptzero.handlers.base import MetadataHandler
-from gptzero.models import EXIFMetadata
+from gptzero_o.handlers.base import MetadataHandler
+from gptzero_o.models import EXIFMetadata
 
 
 class EXIFHandler(MetadataHandler):

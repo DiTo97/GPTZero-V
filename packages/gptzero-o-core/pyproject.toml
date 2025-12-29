@@ -1,12 +1,12 @@
 [project]
-name = "gptzero"
+name = "gptzero-o-core"
 version = "0.1.0"
-description = "GPTZero-V SDK for image authenticity verification"
+description = "GPTZero-o SDK for media content authenticity verification"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
 license = {text = "MIT"}
-keywords = ["content-authenticity", "image-verification", "metadata", "c2pa", "exif"]
+keywords = ["content-authenticity", "media-verification", "metadata", "c2pa", "exif"]
 
 dependencies = [
     "c2pa-python>=0.27.0,<1.0.0",
@@ -26,7 +26,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/gptzero"]
+packages = ["src/gptzero_o"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -37,7 +37,7 @@ addopts = [
     "--strict-markers",
     "--strict-config",
     "-ra",
-    "--cov=gptzero",
+    "--cov=gptzero_o",
     "--cov-report=term-missing",
     "--cov-report=html",
 ]
@@ -63,7 +63,7 @@ select = [
 ignore = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["gptzero"]
+known-first-party = ["gptzero_o"]
 lines-after-imports = 2
 
 [tool.mypy]

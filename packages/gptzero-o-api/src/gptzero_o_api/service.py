@@ -1,8 +1,8 @@
 """Service layer for verification logic."""
 
-from gptzero import ImageInput, ImageVerifier
+from gptzero_o import ImageInput, ImageVerifier
 
-from gptzero_api.models import (
+from gptzero_o_api.models import (
     AuthenticityResultResponse,
     C2PAMetadataResponse,
     EXIFMetadataResponse,

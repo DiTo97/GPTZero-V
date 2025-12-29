@@ -1,6 +1,6 @@
-"""GPTZero-V - Image Authenticity Verification SDK."""
+"""GPTZero-o - Media Content Authenticity Verification SDK."""
 
-from gptzero.models import (
+from gptzero_o.models import (
     AuthenticityResult,
     C2PAMetadata,
     EXIFMetadata,
@@ -8,7 +8,7 @@ from gptzero.models import (
     SoftwareAgent,
     VerificationOutput,
 )
-from gptzero.verification import ImageVerifier
+from gptzero_o.verification import ImageVerifier
 
 
 __version__ = "0.1.0"

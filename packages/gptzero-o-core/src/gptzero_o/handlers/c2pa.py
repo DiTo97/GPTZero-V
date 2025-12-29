@@ -5,8 +5,8 @@ import json
 
 from c2pa import C2paError, Reader
 
-from gptzero.handlers.base import MetadataHandler
-from gptzero.models import C2PAMetadata
+from gptzero_o.handlers.base import MetadataHandler
+from gptzero_o.models import C2PAMetadata
 
 
 class C2PAHandler(MetadataHandler):

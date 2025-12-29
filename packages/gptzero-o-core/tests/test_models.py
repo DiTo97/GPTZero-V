@@ -2,7 +2,7 @@
 
 import pytest
 
-from gptzero.models import (
+from gptzero_o.models import (
     AuthenticityResult,
     C2PAMetadata,
     EXIFMetadata,

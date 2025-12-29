@@ -1,12 +1,12 @@
 [project]
-name = "GPTZero-V"
+name = "gptzero-o"
 version = "0.1.0"
-description = "A simple attempt at a heuristic GPTZero algorithm for image authenticity verification through metadata analysis"
+description = "A media content authenticity toolkit for verifying audio, video, and imagery through metadata analysis"
 readme = "README.md"
 requires-python = ">3.11"
 authors = [{name = "Federico Minutoli", email = "fede97.minutoli@gmail.com"}]
 license = {file = "LICENSE"}
-keywords = ["content-authenticity", "heuristic-algorithm", "image-generation", "metadata"]
+keywords = ["content-authenticity", "media-verification", "metadata", "c2pa", "exif"]
 dependencies = [
   "exif>1,<2",
   "filelock>=3.20.1",
@@ -104,8 +104,8 @@ default-groups = ["contrib"]
 
 [tool.uv.workspace]
 members = [
-    "packages/gptzero",
-    "packages/gptzero-sdk",
-    "packages/gptzero-api",
-    "packages/gptzero-service",
+    "packages/gptzero-o-core",
+    "packages/gptzero-o-sdk",
+    "packages/gptzero-o-api",
+    "packages/gptzero-o-service",
 ]

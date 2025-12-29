@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
-from gptzero.handlers.c2pa import C2PAHandler
-from gptzero.models import ImageInput
-from gptzero.verification import ImageVerifier
+from gptzero_o.handlers.c2pa import C2PAHandler
+from gptzero_o.models import ImageInput
+from gptzero_o.verification import ImageVerifier
 
 
 # Path to example images

@@ -2,8 +2,8 @@
 
 from unittest.mock import patch
 
-from gptzero.models import C2PAMetadata, EXIFMetadata, ImageInput
-from gptzero.verification import ImageVerifier
+from gptzero_o.models import C2PAMetadata, EXIFMetadata, ImageInput
+from gptzero_o.verification import ImageVerifier
 
 
 class TestImageVerifier:

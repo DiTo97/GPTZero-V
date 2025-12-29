@@ -1,8 +1,8 @@
 """Core verification logic."""
 
-from gptzero.handlers.c2pa import C2PAHandler
-from gptzero.handlers.exif import EXIFHandler
-from gptzero.models import AuthenticityResult, ImageInput, VerificationOutput
+from gptzero_o.handlers.c2pa import C2PAHandler
+from gptzero_o.handlers.exif import EXIFHandler
+from gptzero_o.models import AuthenticityResult, ImageInput, VerificationOutput
 
 
 class ImageVerifier:

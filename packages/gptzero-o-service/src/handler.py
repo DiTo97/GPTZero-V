@@ -1,9 +1,9 @@
-"""Streamlit handler for GPTZero-V service using SDK."""
+"""Streamlit handler for GPTZero-o service using SDK."""
 
 import os
 
 import streamlit as st
-from gptzero_sdk import GPTZeroClient
+from gptzero_o_sdk import GPTZeroClient
 
 from components.card import Card
 from components.probability import Probability
@@ -12,13 +12,13 @@ from components.probability import Probability
 # Get API URL from environment or use default
 API_URL = os.getenv("GPTZERO_API_URL", "http://localhost:8000")
 
-st.set_page_config(layout="wide", page_title="GPTZero-V")
+st.set_page_config(layout="wide", page_title="GPTZero-o")
 
 
 def Homepage():  # noqa: N802
     """Render the homepage with information."""
     st.markdown("""
-        ### How GPTZero-V Works
+        ### How GPTZero-o Works
         """)
 
     # Create three columns for the cards
@@ -227,7 +227,7 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    st.title("GPTZero-V")
+    st.title("GPTZero-o")
     st.write("""
     This Streamlit app is designed to verify image authenticity through metadata analysis, helping to identify
     manipulated or synthetic images (including AI-generated content, deepfakes, and screenshots).
