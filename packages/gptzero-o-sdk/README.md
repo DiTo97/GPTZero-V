@@ -1,6 +1,6 @@
-# GPTZero-V SDK
+# GPTZero-o SDK
 
-Python SDK client for interacting with the GPTZero-V API.
+Python SDK client for interacting with the GPTZero-o API.
 
 ## Features
 
@@ -12,7 +12,7 @@ Python SDK client for interacting with the GPTZero-V API.
 ## Installation
 
 ```bash
-pip install gptzero-sdk
+pip install gptzero-o-sdk
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ pip install gptzero-sdk
 ### Synchronous
 
 ```python
-from gptzero_sdk import GPTZeroClient
+from gptzero_o_sdk import GPTZeroClient
 
 # Create client
 client = GPTZeroClient(base_url="http://localhost:8000")
@@ -46,7 +46,7 @@ client.close()
 
 ```python
 import asyncio
-from gptzero_sdk import GPTZeroClient
+from gptzero_o_sdk import GPTZeroClient
 
 async def verify():
     client = GPTZeroClient(base_url="http://localhost:8000")
@@ -67,7 +67,7 @@ asyncio.run(verify())
 ### Context Manager
 
 ```python
-from gptzero_sdk import GPTZeroClient
+from gptzero_o_sdk import GPTZeroClient
 
 # Sync context manager
 with GPTZeroClient(base_url="http://localhost:8000") as client:

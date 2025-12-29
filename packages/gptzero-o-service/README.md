@@ -1,13 +1,13 @@
-# GPTZero-V Service
+# GPTZero-o Service
 
-Streamlit frontend for GPTZero-V image authenticity verification.
+Streamlit frontend for GPTZero-o media content authenticity verification.
 
 ## Features
 
 - **Interactive UI**: User-friendly Streamlit interface
 - **Real-time Analysis**: Upload and analyze images instantly
 - **Visual Feedback**: Charts and cards for easy interpretation
-- **SDK-based**: Uses gptzero-sdk to communicate with the API
+- **SDK-based**: Uses gptzero-o-sdk to communicate with the API
 
 ## Installation
 
@@ -35,7 +35,7 @@ streamlit run packages/gptzero-service/src/handler.py
 
 ### Configuration
 
-Set the `GPTZERO_API_URL` environment variable to point to your GPTZero-V API instance:
+Set the `GPTZERO_API_URL` environment variable to point to your GPTZero-o API instance:
 
 ```bash
 export GPTZERO_API_URL=http://api.example.com:8000

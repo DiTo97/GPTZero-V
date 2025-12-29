@@ -1,6 +1,6 @@
-# GPTZero-V API
+# GPTZero-o API
 
-FastAPI service for image authenticity verification.
+FastAPI service for media content authenticity verification.
 
 ## Features
 
@@ -13,7 +13,7 @@ FastAPI service for image authenticity verification.
 ## Installation
 
 ```bash
-pip install gptzero-api
+pip install gptzero-o-api
 ```
 
 ## Usage

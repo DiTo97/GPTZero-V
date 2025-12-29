@@ -1,6 +1,6 @@
-# GPTZero-V SDK
+# GPTZero-o SDK
 
-Python SDK for image authenticity verification through metadata analysis.
+Python SDK for media content authenticity verification through metadata analysis.
 
 ## Features
 
@@ -12,13 +12,13 @@ Python SDK for image authenticity verification through metadata analysis.
 ## Installation
 
 ```bash
-pip install gptzero
+pip install gptzero-o-core
 ```
 
 ## Usage
 
 ```python
-from gptzero import ImageVerifier, ImageInput
+from gptzero-o-core import ImageVerifier, ImageInput
 
 # Initialize verifier
 verifier = ImageVerifier()
