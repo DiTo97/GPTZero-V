@@ -21,10 +21,10 @@ WORKDIR /app
 # Copy workspace configuration and package definitions
 # This allows uv to understand workspace structure without copying source code
 COPY pyproject.toml uv.lock ./
-COPY packages/gptzero/pyproject.toml packages/gptzero/README.md ./packages/gptzero/
-COPY packages/gptzero-sdk/pyproject.toml packages/gptzero-sdk/README.md ./packages/gptzero-sdk/
-COPY packages/gptzero-api/pyproject.toml packages/gptzero-api/README.md ./packages/gptzero-api/
-COPY packages/gptzero-service/pyproject.toml packages/gptzero-service/README.md ./packages/gptzero-service/
+COPY packages/gptzero-o-core/pyproject.toml packages/gptzero-o-core/README.md ./packages/gptzero-o-core/
+COPY packages/gptzero-o-client-py/pyproject.toml packages/gptzero-o-client-py/README.md ./packages/gptzero-o-client-py/
+COPY packages/gptzero-o-server/pyproject.toml packages/gptzero-o-server/README.md ./packages/gptzero-o-server/
+COPY packages/gptzero-o-web/pyproject.toml packages/gptzero-o-web/README.md ./packages/gptzero-o-web/
 
 # Install dependencies (this layer is cached unless lock/config files change)
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -70,17 +70,17 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Create startup script
 RUN echo '#!/bin/bash\n\
 set -e\n\
-echo "Starting GPTZero API on port 8000..."\n\
-/app/.venv/bin/gptzero-api &\n\
+echo "Starting GPTZero-o API on port 8000..."\n\
+/app/.venv/bin/gptzero-o-server &\n\
 API_PID=$!\n\
 echo "API started with PID $API_PID"\n\
 \n\
 echo "Waiting for API to be ready..."\n\
 sleep 5\n\
 \n\
-echo "Starting GPTZero Service on port 8501..."\n\
+echo "Starting GPTZero-o Service on port 8501..."\n\
 export GPTZERO_API_URL=http://localhost:8000\n\
-/app/.venv/bin/streamlit run /app/packages/gptzero-service/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
+/app/.venv/bin/streamlit run /app/packages/gptzero-o-web/src/handler.py --server.port=8501 --server.address=0.0.0.0 &\n\
 SERVICE_PID=$!\n\
 echo "Service started with PID $SERVICE_PID"\n\
 \n\

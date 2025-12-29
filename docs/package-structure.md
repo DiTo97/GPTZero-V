@@ -1,27 +1,27 @@
-# GPTZero-V Package Structure
+# GPTZero-o Package Structure
 
 ## Overview
 
-GPTZero-V has been refactored from a monolithic application into a modular, multi-package system following SOLID principles and best practices.
+GPTZero-o has been refactored from a monolithic application into a modular, multi-package system following SOLID principles and best practices.
 
 ## Package Architecture
 
 ```
 packages/
-├── gptzero/              # Core SDK library
-├── gptzero-api/          # FastAPI REST service
-├── gptzero-sdk/          # Python client SDK
-└── gptzero-service/      # Streamlit frontend
+├── gptzero-o-core/              # Core SDK library
+├── gptzero-o-core-api/          # FastAPI REST service
+├── gptzero-o-core-sdk/          # Python client SDK
+└── gptzero-o-core-service/      # Streamlit frontend
 ```
 
-## 1. gptzero (Core SDK)
+## 1. gptzero-o-core (Core SDK)
 
-**Purpose**: Standalone library for image authenticity verification
+**Purpose**: Standalone library for media content authenticity verification
 
 **Structure**:
 ```
-gptzero/
-├── src/gptzero/
+gptzero-o-core/
+├── src/gptzero-o-core/
 │   ├── __init__.py           # Public API exports
 │   ├── models.py             # Pydantic/dataclass models
 │   ├── verification.py       # Main verifier logic
@@ -51,14 +51,14 @@ gptzero/
 - **Factory Pattern**: Handler initialization
 - **Data Transfer Objects**: Structured models for input/output
 
-## 2. gptzero-api (FastAPI Service)
+## 2. gptzero-o-core-api (FastAPI Service)
 
 **Purpose**: RESTful API exposing verification endpoints
 
 **Structure**:
 ```
-gptzero-api/
-├── src/gptzero_api/
+gptzero-o-core-api/
+├── src/gptzero_o_server/
 │   ├── __init__.py
 │   ├── api.py                # FastAPI app & routes
 │   ├── models.py             # Request/response models
@@ -69,7 +69,7 @@ gptzero-api/
 
 **Endpoints**:
 - `GET /health` - Health check
-- `POST /v1/verify` - Image verification (multipart/form-data)
+- `POST /v1/verify` - Media content verification (multipart/form-data)
 - `GET /docs` - OpenAPI documentation
 
 **Features**:
@@ -92,14 +92,14 @@ async def log_requests(request, call_next):
     return response
 ```
 
-## 3. gptzero-sdk (Python Client)
+## 3. gptzero-o-core-sdk (Python Client)
 
 **Purpose**: Python SDK for interacting with the API
 
 **Structure**:
 ```
-gptzero-sdk/
-├── src/gptzero_sdk/
+gptzero-o-core-sdk/
+├── src/gptzero_o_client/
 │   ├── __init__.py
 │   ├── client.py             # httpx-based client
 │   └── models.py             # Response models
@@ -127,13 +127,13 @@ async with GPTZeroClient(base_url="http://localhost:8000") as client:
     result = await client.verify_image_async(file_path="image.jpg")
 ```
 
-## 4. gptzero-service (Streamlit Frontend)
+## 4. gptzero-o-core-service (Streamlit Frontend)
 
 **Purpose**: Interactive web interface
 
 **Structure**:
 ```
-gptzero-service/
+gptzero-o-core-service/
 ├── src/
 │   ├── handler.py            # Main Streamlit app
 │   ├── components/
@@ -160,10 +160,10 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
 # Copy workspace configuration and package definitions
 COPY pyproject.toml uv.lock ./
-COPY packages/gptzero/pyproject.toml ./packages/gptzero/
-COPY packages/gptzero-sdk/pyproject.toml ./packages/gptzero-sdk/
-COPY packages/gptzero-api/pyproject.toml ./packages/gptzero-api/
-COPY packages/gptzero-service/pyproject.toml ./packages/gptzero-service/
+COPY packages/gptzero-o-core/pyproject.toml ./packages/gptzero-o-core/
+COPY packages/gptzero-o-core-sdk/pyproject.toml ./packages/gptzero-o-core-sdk/
+COPY packages/gptzero-o-core-api/pyproject.toml ./packages/gptzero-o-core-api/
+COPY packages/gptzero-o-core-service/pyproject.toml ./packages/gptzero-o-core-service/
 
 # Install dependencies (cached separately)
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -200,7 +200,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 GitHub Actions workflow (`.github/workflows/test.yml`):
 
 **Jobs**:
-1. **test-gptzero** - Run unit tests with coverage
+1. **test-gptzero-o-core** - Run unit tests with coverage
 2. **test-api** - Lint API package
 3. **test-sdk** - Lint SDK package
 4. **lint** - Lint all packages
@@ -211,7 +211,7 @@ GitHub Actions workflow (`.github/workflows/test.yml`):
 
 ## Testing Strategy
 
-### Unit Tests (gptzero)
+### Unit Tests (gptzero-o-core)
 - **Models**: Input validation, data transformations
 - **Verification**: Business logic, authenticity computation
 - **Utils**: Helper functions
@@ -244,32 +244,32 @@ GitHub Actions workflow (`.github/workflows/test.yml`):
 
 2. **Run tests**:
    ```bash
-   uv run --package gptzero pytest packages/gptzero/tests/ -v --cov=gptzero
+   uv run --package gptzero-o-core pytest packages/gptzero-o-core/tests/ -v --cov=gptzero_o-o-core
    ```
 
 3. **Run linting**:
    ```bash
-   uv run ruff check packages/gptzero/src/ packages/gptzero/tests/
+   uv run ruff check packages/gptzero-o-core/src/ packages/gptzero-o-core/tests/
    ```
 
 4. **Start services**:
    ```bash
    # Terminal 1: API
-   uv run --package gptzero-api gptzero-api
+   uv run --package gptzero-o-core-api gptzero-o-core-api
    
    # Terminal 2: Service
    export GPTZERO_API_URL=http://localhost:8000
-   uv run --package gptzero-service streamlit run packages/gptzero-service/src/handler.py
+   uv run --package gptzero-o-core-service streamlit run packages/gptzero-o-core-service/src/handler.py
    ```
 
 ### Docker Development
 
 ```bash
 # Build
-docker build -t gptzero-v:0.1 .
+docker build -t gptzero-o-core-v:0.1 .
 
 # Run
-docker run -p 8000:8000 -p 8501:8501 gptzero-v:0.1
+docker run -p 8000:8000 -p 8501:8501 gptzero-o-core-v:0.1
 ```
 
 ## Key Improvements
@@ -297,7 +297,7 @@ docker run -p 8000:8000 -p 8501:8501 gptzero-v:0.1
 
 ### Adding New Media Types
 
-1. **Create new handler** in `gptzero/handlers/`:
+1. **Create new handler** in `gptzero-o-core/handlers/`:
    ```python
    class VideoHandler(MetadataHandler):
        def extract(self, data: bytes, mime_type: str):
@@ -350,7 +350,7 @@ docker run -p 8000:8000 -p 8501:8501 gptzero-v:0.1
 
 ## Conclusion
 
-The refactored GPTZero-V demonstrates professional software engineering practices with:
+The refactored GPTZero-o demonstrates professional software engineering practices with:
 - Clean architecture
 - Comprehensive testing
 - CI/CD pipeline
