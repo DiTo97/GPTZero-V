@@ -1,5 +1,5 @@
 [project]
-name = "gptzero-o-service"
+name = "gptzero-o-web"
 version = "0.1.0"
 description = "Streamlit frontend for GPTZero-o media content authenticity verification"
 readme = "README.md"
@@ -10,7 +10,7 @@ license = {text = "MIT"}
 dependencies = [
     "streamlit>=1.0.0,<2",
     "plotly>=6.0.0",
-    "gptzero-o-sdk",
+    "gptzero-o-client-py",
 ]
 
 [build-system]
@@ -21,7 +21,7 @@ build-backend = "hatchling.build"
 packages = ["src/components"]
 
 [tool.uv.sources]
-gptzero-o-sdk = { workspace = true }
+gptzero-o-client-py = { workspace = true }
 
 [tool.ruff]
 src = ["src"]

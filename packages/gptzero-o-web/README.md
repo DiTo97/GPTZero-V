@@ -7,7 +7,7 @@ Streamlit frontend for GPTZero-o media content authenticity verification.
 - **Interactive UI**: User-friendly Streamlit interface
 - **Real-time Analysis**: Upload and analyze images instantly
 - **Visual Feedback**: Charts and cards for easy interpretation
-- **SDK-based**: Uses gptzero-o-sdk to communicate with the API
+- **SDK-based**: Uses gptzero-o-client-py to communicate with the API
 
 ## Installation
 

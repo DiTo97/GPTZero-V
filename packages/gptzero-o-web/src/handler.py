@@ -3,7 +3,7 @@
 import os
 
 import streamlit as st
-from gptzero_o_sdk import GPTZeroClient
+from gptzero_o_client import GPTZeroClient
 
 from components.card import Card
 from components.probability import Probability

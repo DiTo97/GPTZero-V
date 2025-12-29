@@ -13,7 +13,7 @@ FastAPI service for media content authenticity verification.
 ## Installation
 
 ```bash
-pip install gptzero-o-api
+pip install gptzero-o-server
 ```
 
 ## Usage

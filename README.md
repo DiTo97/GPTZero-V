@@ -24,28 +24,28 @@ Python SDK for media content authenticity verification with structured base mode
 - 📊 Test Coverage: 71% (32 tests passing)
 - 📚 [Documentation](packages/gptzero-o-core/README.md)
 
-### 2. **gptzero-o-api** - FastAPI Service
+### 2. **gptzero-o-server** - FastAPI Service
 RESTful API service exposing authenticity verification endpoints.
 
-- 📁 Location: `packages/gptzero-o-api/`
+- 📁 Location: `packages/gptzero-o-server/`
 - 🔧 Features: FastAPI application, Pydantic models, middleware, CORS support
 - 🌐 Default Port: 8000
-- 📚 [Documentation](packages/gptzero-o-api/README.md)
+- 📚 [Documentation](packages/gptzero-o-server/README.md)
 
-### 3. **gptzero-o-sdk** - Python Client
+### 3. **gptzero-o-client-py** - Python Client
 Python SDK client for interacting with the GPTZero-o API.
 
-- 📁 Location: `packages/gptzero-o-sdk/`
+- 📁 Location: `packages/gptzero-o-client-py/`
 - 🔧 Features: Sync/async httpx client, type-safe models, context managers
-- 📚 [Documentation](packages/gptzero-o-sdk/README.md)
+- 📚 [Documentation](packages/gptzero-o-client-py/README.md)
 
-### 4. **gptzero-o-service** - Streamlit Frontend
+### 4. **gptzero-o-web** - Streamlit Frontend
 Interactive web interface for media content authenticity verification.
 
-- 📁 Location: `packages/gptzero-o-service/`
+- 📁 Location: `packages/gptzero-o-web/`
 - 🔧 Features: Streamlit UI, visual feedback, SDK integration
 - 🌐 Default Port: 8501
-- 📚 [Documentation](packages/gptzero-o-service/README.md)
+- 📚 [Documentation](packages/gptzero-o-web/README.md)
 
 ## 🚀 Installation
 
@@ -86,11 +86,11 @@ uv sync --all-packages --group dev
 
 ```bash
 # Terminal 1: Start the API
-uv run --package gptzero-o-api gptzero-o-api
+uv run --package gptzero-o-server gptzero-o-server
 
 # Terminal 2: Start the Service
 export GPTZERO_API_URL=http://localhost:8000
-uv run --package gptzero-o-service streamlit run packages/gptzero-o-service/src/handler.py
+uv run --package gptzero-o-web streamlit run packages/gptzero-o-web/src/handler.py
 ```
 
 ## 💻 Usage Examples
@@ -119,7 +119,7 @@ print(f"Has EXIF: {result.has_exif}")
 ### API Client
 
 ```python
-from gptzero_o_sdk import GPTZeroClient
+from gptzero_o_client import GPTZeroClient
 
 with GPTZeroClient(base_url="http://localhost:8000") as client:
     result = client.verify_image(file_path="image.jpg")
@@ -149,9 +149,9 @@ pytest tests/ -v --cov=gptzero_o
 
 # Lint all packages
 cd packages/gptzero-o-core && ruff check src/ tests/ && cd ../..
-cd packages/gptzero-o-api && ruff check src/ && cd ../..
-cd packages/gptzero-o-sdk && ruff check src/ && cd ../..
-cd packages/gptzero-o-service && ruff check src/ && cd ../..
+cd packages/gptzero-o-server && ruff check src/ && cd ../..
+cd packages/gptzero-o-client-py && ruff check src/ && cd ../..
+cd packages/gptzero-o-web && ruff check src/ && cd ../..
 ```
 
 ## 🔄 CI/CD
@@ -178,14 +178,14 @@ The workflow includes:
 
 ```
 ┌─────────────────────────────────────────────┐
-│       gptzero-o-service (Streamlit)         │
+│       gptzero-o-web (Streamlit)         │
 │              Port 8501                      │
 └────────────────┬────────────────────────────┘
                  │
                  │ SDK Client
                  ▼
 ┌─────────────────────────────────────────────┐
-│        gptzero-o-api (FastAPI)              │
+│        gptzero-o-server (FastAPI)              │
 │              Port 8000                      │
 └────────────────┬────────────────────────────┘
                  │

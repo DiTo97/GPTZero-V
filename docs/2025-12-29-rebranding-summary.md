@@ -9,12 +9,12 @@ Successfully completed the comprehensive rebranding of GPTZero-V to GPTZero-o, t
 - **Root workspace**: `GPTZero-V` → `gptzero-o`
 - **Core package**: `packages/gptzero` → `packages/gptzero-o-core`
   - Python package: `gptzero` → `gptzero_o`
-- **API package**: `packages/gptzero-api` → `packages/gptzero-o-api`
-  - Python package: `gptzero_api` → `gptzero_o_api`
-  - CLI command: `gptzero-api` → `gptzero-o-api`
-- **SDK package**: `packages/gptzero-sdk` → `packages/gptzero-o-sdk`
-  - Python package: `gptzero_sdk` → `gptzero_o_sdk`
-- **Service package**: `packages/gptzero-service` → `packages/gptzero-o-service`
+- **API package**: `packages/gptzero-api` → `packages/gptzero-o-server`
+  - Python package: `gptzero_api` → `gptzero_o_server`
+  - CLI command: `gptzero-api` → `gptzero-o-server`
+- **SDK package**: `packages/gptzero-sdk` → `packages/gptzero-o-client-py`
+  - Python package: `gptzero_sdk` → `gptzero_o_client`
+- **Service package**: `packages/gptzero-service` → `packages/gptzero-o-web`
 
 ### 2. Code Updates
 - Updated all import statements across all packages

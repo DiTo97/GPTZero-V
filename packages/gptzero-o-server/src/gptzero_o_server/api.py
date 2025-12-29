@@ -9,13 +9,13 @@ from typing import Annotated
 from fastapi import FastAPI, File, HTTPException, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from gptzero_o_api import __version__
-from gptzero_o_api.models import (
+from gptzero_o_server import __version__
+from gptzero_o_server.models import (
     ErrorResponse,
     HealthResponse,
     VerifyImageResponse,
 )
-from gptzero_o_api.service import VerificationService
+from gptzero_o_server.service import VerificationService
 
 
 # Configure logging

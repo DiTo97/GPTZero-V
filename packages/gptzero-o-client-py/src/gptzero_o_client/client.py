@@ -5,7 +5,7 @@ from typing import BinaryIO
 
 import httpx
 
-from gptzero_o_sdk.models import HealthResponse, VerifyImageResponse
+from gptzero_o_client.models import HealthResponse, VerifyImageResponse
 
 
 class GPTZeroClient:

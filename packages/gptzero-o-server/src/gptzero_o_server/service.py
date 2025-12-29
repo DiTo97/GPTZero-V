@@ -2,7 +2,7 @@
 
 from gptzero_o import ImageInput, ImageVerifier
 
-from gptzero_o_api.models import (
+from gptzero_o_server.models import (
     AuthenticityResultResponse,
     C2PAMetadataResponse,
     EXIFMetadataResponse,

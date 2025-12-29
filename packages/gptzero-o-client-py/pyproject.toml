@@ -1,5 +1,5 @@
 [project]
-name = "gptzero-o-sdk"
+name = "gptzero-o-client-py"
 version = "0.1.0"
 description = "Python SDK for GPTZero-o API"
 readme = "README.md"
@@ -25,7 +25,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/gptzero_o_sdk"]
+packages = ["src/gptzero_o_client"]
 
 [tool.uv.sources]
 gptzero-o-core = { workspace = true }
@@ -40,5 +40,5 @@ select = ["E", "F", "W", "I", "N", "UP", "YTT", "B", "C4", "SIM"]
 ignore = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["gptzero_o_sdk"]
+known-first-party = ["gptzero_o_client"]
 lines-after-imports = 2

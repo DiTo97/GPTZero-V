@@ -105,7 +105,7 @@ default-groups = ["contrib"]
 [tool.uv.workspace]
 members = [
     "packages/gptzero-o-core",
-    "packages/gptzero-o-sdk",
-    "packages/gptzero-o-api",
-    "packages/gptzero-o-service",
+    "packages/gptzero-o-client-py",
+    "packages/gptzero-o-server",
+    "packages/gptzero-o-web",
 ]

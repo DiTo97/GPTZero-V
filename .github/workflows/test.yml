@@ -58,7 +58,7 @@ jobs:
       run: uv sync --all-packages --group dev
     
     - name: Run linting
-      run: uv run --package gptzero-o-api ruff check packages/gptzero-o-api/src/
+      run: uv run --package gptzero-o-server ruff check packages/gptzero-o-server/src/
 
   test-sdk:
     name: Test GPTZero-o SDK Client
@@ -79,7 +79,7 @@ jobs:
       run: uv sync --all-packages --group dev
     
     - name: Run linting
-      run: uv run --package gptzero-o-sdk ruff check packages/gptzero-o-sdk/src/
+      run: uv run --package gptzero-o-client-py ruff check packages/gptzero-o-client-py/src/
 
   lint:
     name: Lint All Packages
@@ -102,11 +102,32 @@ jobs:
     - name: Lint gptzero-o-core
       run: uv run ruff check packages/gptzero-o-core/src/ packages/gptzero-o-core/tests/
     
-    - name: Lint gptzero-o-api
-      run: uv run ruff check packages/gptzero-o-api/src/
+    - name: Lint gptzero-o-server
+      run: uv run ruff check packages/gptzero-o-server/src/
     
-    - name: Lint gptzero-o-sdk
-      run: uv run ruff check packages/gptzero-o-sdk/src/
+    - name: Lint gptzero-o-client-py
+      run: uv run ruff check packages/gptzero-o-client-py/src/
     
-    - name: Lint gptzero-o-service
-      run: uv run ruff check packages/gptzero-o-service/src/
+    - name: Lint gptzero-o-web
+      run: uv run ruff check packages/gptzero-o-web/src/
+
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+    
+    - name: Set up Python
+      run: uv python install 3.11
+    
+    - name: Install dependencies
+      run: uv sync --all-packages --group dev
+    
+    - name: Run integration tests
+      run: uv run --package gptzero-o-client-py pytest packages/gptzero-o-client-py/tests/test_integration.py::TestAPIClient::test_client_import -v
