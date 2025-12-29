@@ -68,10 +68,10 @@ class C2PAMetadata:
         """
         Parse a C2PA manifest dictionary and extract relevant metadata.
 
-        Supports both c2patool binary format and c2pa-python library format.
+        Uses c2pa-python library format.
 
         Args:
-            manifest: Dictionary containing C2PA manifest data
+            manifest: Dictionary containing C2PA manifest data from c2pa-python
 
         Returns:
             C2PAMetadata object with parsed information
@@ -79,14 +79,7 @@ class C2PAMetadata:
         active_manifest_id = manifest.get("active_manifest")
         active_manifest = manifest.get("manifests", {}).get(active_manifest_id, {})
 
-        # Try c2pa-python format first (simpler structure)
-        if "claim_generator_info" in active_manifest and isinstance(
-            active_manifest["claim_generator_info"], list
-        ):
-            return cls._from_c2pa_python_format(manifest, active_manifest)
-
-        # Fall back to c2patool binary format
-        return cls._from_c2patool_format(manifest, active_manifest)
+        return cls._from_c2pa_python_format(manifest, active_manifest)
 
     @classmethod
     def _from_c2pa_python_format(
@@ -148,64 +141,6 @@ class C2PAMetadata:
             title=title,
             issuer=issuer,
             generator_name=generator_name,
-            digital_source_type=digital_source_type,
-            software_agents=software_agents,
-        )
-
-    @classmethod
-    def _from_c2patool_format(
-        cls, manifest: dict[str, Any], active_manifest: dict[str, Any]
-    ) -> "C2PAMetadata":
-        """
-        Parse manifest from c2patool binary format (legacy).
-
-        .. deprecated:: 0.2.0
-            This method is deprecated as c2patool binary is no longer used.
-            The c2pa-python library is now used for all C2PA operations.
-            This method remains for backward compatibility with old manifest formats.
-        """
-        claim = active_manifest.get("claim", {})
-        claim_generator_info = claim.get("claim_generator_info", {})
-        instance_id = claim.get("instanceID", "Unknown")
-        title = claim.get("dc:title", "Unknown")
-
-        signature_info = active_manifest.get("signature", {})
-        issuer = signature_info.get("issuer", "Unknown")
-
-        assertion_store = active_manifest.get("assertion_store", {})
-        assertion_manifest_id = (
-            assertion_store.get("c2pa.ingredient.v3", {})
-            .get("activeManifest", {})
-            .get("url", "")
-            .split("/")[-1]
-        )
-
-        software_agents: list[SoftwareAgent] = []
-        digital_source_type: str | None = None
-
-        assertion_manifest = manifest.get("manifests", {}).get(assertion_manifest_id, {})
-
-        if assertion_manifest:
-            assertion_assertion_store = assertion_manifest.get("assertion_store", {})
-
-            # Extract software agents and digital source type from assertions
-            actions = assertion_assertion_store.get("c2pa.actions.v2", {}).get("actions", [])
-            for action in actions:
-                agent_name = action.get("softwareAgent", {}).get("name")
-                if agent_name and agent_name not in [sa.name for sa in software_agents]:
-                    action_type = action.get("action", "").replace("c2pa.", "")
-                    software_agents.append(SoftwareAgent(name=agent_name, action=action_type))
-
-                if "digitalSourceType" in action:
-                    digital_source_type = action.get("digitalSourceType", "")
-                    if "trainedAlgorithmicMedia" in digital_source_type:
-                        digital_source_type = "This content was generated with an AI tool"
-
-        return cls(
-            instance_id=instance_id,
-            title=title,
-            issuer=issuer,
-            generator_name=claim_generator_info.get("name", "Unknown"),
             digital_source_type=digital_source_type,
             software_agents=software_agents,
         )
