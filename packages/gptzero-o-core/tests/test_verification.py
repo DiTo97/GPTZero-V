@@ -20,8 +20,8 @@ class TestImageVerifier:
         assert "cannot be empty" in result.error
         assert result.authenticity.probability == 50
 
-    @patch("gptzero.verification.C2PAHandler")
-    @patch("gptzero.verification.EXIFHandler")
+    @patch("gptzero_o.verification.C2PAHandler")
+    @patch("gptzero_o.verification.EXIFHandler")
     def test_verify_ai_generated_image(self, mock_exif_handler, mock_c2pa_handler):
         """Test verification of AI-generated image."""
         # Setup mocks
@@ -50,8 +50,8 @@ class TestImageVerifier:
         assert result.authenticity.confidence_level == "high"
         assert result.has_c2pa is True
 
-    @patch("gptzero.verification.C2PAHandler")
-    @patch("gptzero.verification.EXIFHandler")
+    @patch("gptzero_o.verification.C2PAHandler")
+    @patch("gptzero_o.verification.EXIFHandler")
     def test_verify_authentic_image_with_exif(self, mock_exif_handler, mock_c2pa_handler):
         """Test verification of authentic image with EXIF."""
         # Setup mocks
@@ -69,8 +69,8 @@ class TestImageVerifier:
         assert result.authenticity.confidence_level == "high"
         assert result.has_exif is True
 
-    @patch("gptzero.verification.C2PAHandler")
-    @patch("gptzero.verification.EXIFHandler")
+    @patch("gptzero_o.verification.C2PAHandler")
+    @patch("gptzero_o.verification.EXIFHandler")
     def test_verify_ambiguous_image(self, mock_exif_handler, mock_c2pa_handler):
         """Test verification of ambiguous image (no C2PA, no EXIF)."""
         # Setup mocks
@@ -90,8 +90,8 @@ class TestImageVerifier:
         assert result.authenticity.is_likely_authentic is False
         assert result.authenticity.confidence_level == "low"
 
-    @patch("gptzero.verification.C2PAHandler")
-    @patch("gptzero.verification.EXIFHandler")
+    @patch("gptzero_o.verification.C2PAHandler")
+    @patch("gptzero_o.verification.EXIFHandler")
     def test_verify_with_extraction_error(self, mock_exif_handler, mock_c2pa_handler):
         """Test verification when extraction fails."""
         # Setup mocks
