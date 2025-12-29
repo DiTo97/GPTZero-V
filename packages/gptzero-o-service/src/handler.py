@@ -229,8 +229,9 @@ def main() -> None:
 
     st.title("GPTZero-o")
     st.write("""
-    This Streamlit app is designed to verify image authenticity through metadata analysis, helping to identify
-    manipulated or synthetic images (including AI-generated content, deepfakes, and screenshots).
+    This Streamlit app is designed to verify media content authenticity through metadata analysis, helping to identify
+    manipulated or synthetic media (including AI-generated content, deepfakes, and screenshots). Currently focused on imagery,
+    with audio and video support planned for future releases.
     """)
 
     # Create tabs for different sections
