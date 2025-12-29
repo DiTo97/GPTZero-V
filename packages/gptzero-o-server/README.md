@@ -21,7 +21,7 @@ pip install gptzero-o-server
 ### Running the API
 
 ```bash
-uvicorn gptzero_api.api:app --host 0.0.0.0 --port 8000
+uvicorn gptzero_o_server.api:app --host 0.0.0.0 --port 8000
 ```
 
 ### API Endpoints
@@ -76,7 +76,7 @@ curl -X POST "http://localhost:8000/v1/verify" \
 pip install -e ".[dev]"
 
 # Run with auto-reload
-uvicorn gptzero_api.api:app --reload
+uvicorn gptzero_o_server.api:app --reload
 ```
 
 ## License

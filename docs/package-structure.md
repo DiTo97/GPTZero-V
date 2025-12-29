@@ -58,7 +58,7 @@ gptzero-o-core/
 **Structure**:
 ```
 gptzero-o-core-api/
-├── src/gptzero_api/
+├── src/gptzero_o_server/
 │   ├── __init__.py
 │   ├── api.py                # FastAPI app & routes
 │   ├── models.py             # Request/response models
@@ -99,7 +99,7 @@ async def log_requests(request, call_next):
 **Structure**:
 ```
 gptzero-o-core-sdk/
-├── src/gptzero_sdk/
+├── src/gptzero_o_client/
 │   ├── __init__.py
 │   ├── client.py             # httpx-based client
 │   └── models.py             # Response models

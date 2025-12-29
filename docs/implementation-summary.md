@@ -245,7 +245,7 @@ Both services run in one container.
 ### 2. Separate Services
 ```bash
 # Terminal 1: API
-uvicorn gptzero_api.api:app --host 0.0.0.0 --port 8000
+uvicorn gptzero_o_server.api:app --host 0.0.0.0 --port 8000
 
 # Terminal 2: Service
 export GPTZERO_API_URL=http://localhost:8000
